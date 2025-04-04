@@ -1,10 +1,8 @@
 package com.example.controller;
 
-
 import com.example.dtos.AccountDTO;
-import com.example.service.AcountService;
+import com.example.service.AccountService;
 import io.micronaut.http.HttpResponse;
-import io.micronaut.http.HttpStatus;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;
 import jakarta.inject.Inject;
@@ -15,7 +13,7 @@ import java.util.Map;
 public class UserController {
 
     @Inject
-    AcountService accountService;
+    AccountService accountService;
 
     @Post(value = "/create", consumes = MediaType.APPLICATION_JSON, produces = MediaType.APPLICATION_JSON)
     public HttpResponse<?> createAccount(@Body AccountDTO userDTO) {
@@ -25,28 +23,28 @@ public class UserController {
             );
         } catch (Exception e) {
             return HttpResponse.badRequest(
-                    Map.of(
-                    "result", false));
+                    Map.of("result", false)
+            );
         }
     }
 
     @Get(value = "/findByEmail", produces = MediaType.APPLICATION_JSON)
-    public HttpResponse<AccountDTO> findbyEmail(@QueryValue("email") String email){
-        try {
-            AccountDTO account = accountService.findbyEmail(email);
+    public HttpResponse<?> findbyEmail(@QueryValue("email") String email) {
+        AccountDTO account = accountService.findbyEmail(email);
+        if (account != null) {
             return HttpResponse.ok(account);
-        }catch (Exception e){
-            return HttpResponse.serverError();
+        } else {
+            return HttpResponse.ok(Map.of("result", "not found"));
         }
     }
 
     @Get(value = "/findByUsername", produces = MediaType.APPLICATION_JSON)
-    public HttpResponse<AccountDTO> findByUsername(@QueryValue("username") String username){
-        try {
-            AccountDTO account = accountService.findbyUsername(username);
+    public HttpResponse<?> findByUsername(@QueryValue("username") String username) {
+        AccountDTO account = accountService.findbyUsername(username);
+        if (account != null) {
             return HttpResponse.ok(account);
-        }catch (Exception e){
-            return HttpResponse.serverError();
+        } else {
+            return HttpResponse.ok(Map.of("result", "not found"));
         }
     }
 }
