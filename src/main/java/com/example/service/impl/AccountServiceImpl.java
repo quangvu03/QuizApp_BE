@@ -9,6 +9,8 @@ import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.util.Optional;
+
 @Singleton
 public class AccountServiceImpl implements AccountService {
 
@@ -25,7 +27,7 @@ public class AccountServiceImpl implements AccountService {
             user.setStatus(false);
             String rawPassword = userDTO.getPassword();
             if (user.getUserName() == null || user.getEmail() == null || user.getFullName() == null
-                    || user.getPhone() == null ) {
+                    || user.getPhone() == null) {
                 throw new IllegalArgumentException("Vui long nhap day du thong tin");
             }
             if (rawPassword == null || rawPassword.trim().isEmpty()) {
@@ -53,4 +55,21 @@ public class AccountServiceImpl implements AccountService {
                 .map(userMapper::toDTO) // Nếu có kết quả, map sang DTO
                 .orElse(null); // Nếu không, trả về null
     }
+
+    @Override
+    public AccountDTO loginbyEmail(String username, String password) {
+        Optional<Account> accountOpt = userRepository.checkusernameorEmail(username);
+
+        if (accountOpt.isPresent()) {
+            Account account = accountOpt.get();
+            String hashedPassword = account.getPassword();
+            boolean isPasswordValid = BCrypt.checkpw(password, hashedPassword);
+
+            if (isPasswordValid) {
+                return userMapper.toDTO(account);
+            }
+        }
+        return null;
+    }
 }
+

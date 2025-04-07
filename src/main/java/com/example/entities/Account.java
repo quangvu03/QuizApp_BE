@@ -1,15 +1,15 @@
 package com.example.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.micronaut.serde.annotation.Serdeable;
+import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
+@Serdeable // Thêm annotation này
 
 @Entity
 @Table(name = "account")
 public class Account {
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Cho MySQL, PostgreSQL
     @Id
     @Column(name = "id")
     private Long id;
@@ -17,6 +17,8 @@ public class Account {
     @Column(name = "userName")
     private String userName;
 
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "password")
     private String password;
 

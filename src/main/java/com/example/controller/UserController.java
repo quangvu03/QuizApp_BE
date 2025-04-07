@@ -47,4 +47,14 @@ public class UserController {
             return HttpResponse.ok(Map.of("result", "not found"));
         }
     }
+
+    @Post(value = "/login", produces = MediaType.APPLICATION_JSON)
+    public HttpResponse<?> login(@QueryValue("username") String username,@QueryValue("password") String password) {
+        AccountDTO account = accountService.loginbyEmail(username,password);
+        if (account != null) {
+            return HttpResponse.ok(account);
+        } else {
+            return HttpResponse.ok(Map.of("result", "not found"));
+        }
+    }
 }
