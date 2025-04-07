@@ -25,7 +25,7 @@ public class AccountServiceImpl implements AccountService {
             user.setStatus(false);
             String rawPassword = userDTO.getPassword();
             if (user.getUserName() == null || user.getEmail() == null || user.getFullName() == null
-                    || user.getPhone() == null || user.getDateOfBirth() == null) {
+                    || user.getPhone() == null ) {
                 throw new IllegalArgumentException("Vui long nhap day du thong tin");
             }
             if (rawPassword == null || rawPassword.trim().isEmpty()) {

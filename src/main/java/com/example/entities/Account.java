@@ -29,9 +29,6 @@ public class Account {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "dateOfBirth")
-    private LocalDateTime dateOfBirth;
-
     @Column(name = "phone")
     private String phone;
 
@@ -83,13 +80,6 @@ public class Account {
         this.email = email;
     }
 
-    public LocalDateTime getDateOfBirth() {
-        return this.dateOfBirth;
-    }
-
-    public void setDateOfBirth(LocalDateTime dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
 
     public String getPhone() {
         return this.phone;
