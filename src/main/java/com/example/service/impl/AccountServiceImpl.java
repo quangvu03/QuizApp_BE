@@ -5,6 +5,7 @@ import com.example.dtos.AccountDTO;
 import com.example.entities.Account;
 import com.example.repositories.UserRepository;
 import com.example.service.AccountService;
+import io.micronaut.transaction.annotation.Transactional;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.mindrot.jbcrypt.BCrypt;
@@ -71,5 +72,40 @@ public class AccountServiceImpl implements AccountService {
         }
         return null;
     }
+
+    @Override
+    @Transactional
+    public String changPassword(String email, String changePassword) {
+        String result = "";
+        Optional<Account> accoutOTN = userRepository.findByEmail(email);
+
+        if(accoutOTN.isEmpty()){
+            return "notFound";
+        }
+        Account account = accoutOTN.get();
+            if (changePassword.length() < 8) {
+                result = "password to short";
+            } else {
+                result = "successfully";
+                account.setPassword(changePassword);
+                userRepository.save(account);
+            }
+        return result;
+    }
+
+    @Override
+    @Transactional
+    public Account updateAccount(Long id, AccountDTO accountDTO) {
+        Optional<Account> existingAccount = userRepository.findById(id);
+        if(existingAccount.isPresent()){
+            Account account = existingAccount.get();
+            account.setPhone(accountDTO.getPhone());
+            account.setFullName(accountDTO.getFullName());
+            return userRepository.save(account);
+        }else{
+            return null;
+        }
+    }
 }
+
 

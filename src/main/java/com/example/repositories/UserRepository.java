@@ -1,7 +1,5 @@
 package com.example.repositories;
-import com.example.dtos.AccountDTO;
 import com.example.entities.Account;
-import io.micronaut.core.annotation.NonNull;
 import io.micronaut.data.annotation.Query;
 import io.micronaut.data.annotation.Repository;
 import io.micronaut.data.repository.CrudRepository;

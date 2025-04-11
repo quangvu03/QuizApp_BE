@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.dtos.AccountDTO;
+import com.example.entities.Account;
 import com.example.service.AccountService;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
@@ -32,9 +33,9 @@ public class UserController {
     public HttpResponse<?> findbyEmail(@QueryValue("email") String email) {
         AccountDTO account = accountService.findbyEmail(email);
         if (account != null) {
-            return HttpResponse.ok(account);
+            return HttpResponse.ok(Map.of("result", account));
         } else {
-            return HttpResponse.ok(Map.of("result", "not found"));
+            return HttpResponse.badRequest(Map.of("result", "not found"));
         }
     }
 
@@ -42,9 +43,9 @@ public class UserController {
     public HttpResponse<?> findByUsername(@QueryValue("username") String username) {
         AccountDTO account = accountService.findbyUsername(username);
         if (account != null) {
-            return HttpResponse.ok(account);
+            return HttpResponse.ok(Map.of("result", account));
         } else {
-            return HttpResponse.ok(Map.of("result", "not found"));
+            return HttpResponse.badRequest(Map.of("result", "not found"));
         }
     }
 
@@ -55,6 +56,38 @@ public class UserController {
             return HttpResponse.ok(account);
         } else {
             return HttpResponse.ok(Map.of("result", "not found"));
+        }
+    }
+
+    @Post(value = "/changePassword", produces = MediaType.APPLICATION_JSON)
+    public HttpResponse<?> changePassword(@QueryValue("email") String email,
+                                          @QueryValue("Changepassword") String changePassword) {
+        String result = accountService.changPassword(email, changePassword);
+        try {
+            if (result.equals("successfully")) {
+                return HttpResponse.ok(Map.of("result", result));
+            } else {
+                return HttpResponse.badRequest(Map.of("result", result));
+            }
+        }catch (Exception e){
+            return HttpResponse.serverError("Error: " + e.getMessage());
+        }
+    }
+
+    @Put("/updateAccount/{id}")
+    public HttpResponse<?> updateAccount(@PathVariable Long id, @Body AccountDTO updateDTO) {
+        if (updateDTO.getPhone() == null || updateDTO.getPhone().trim().isEmpty()) {
+            return HttpResponse.badRequest(Map.of("result", "Phone is null or empty"));
+        }
+
+        if (updateDTO.getFullName() == null || updateDTO.getFullName().trim().isEmpty()) {
+            return HttpResponse.badRequest(Map.of("result", "FullName is null or empty"));
+        }
+        Account updatedAccount = accountService.updateAccount(id, updateDTO);
+        if(updatedAccount!=null){
+            return HttpResponse.ok(Map.of("result", updatedAccount));
+        }else{
+            return HttpResponse.badRequest(Map.of( "result","Account null"));
         }
     }
 }
