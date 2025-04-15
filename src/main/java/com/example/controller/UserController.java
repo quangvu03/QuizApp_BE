@@ -1,12 +1,14 @@
 package com.example.controller;
 
 import com.example.dtos.AccountDTO;
+import com.example.dtos.newpassWordDTO;
 import com.example.entities.Account;
 import com.example.service.AccountService;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;
 import jakarta.inject.Inject;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.Map;
 
@@ -50,8 +52,8 @@ public class UserController {
     }
 
     @Post(value = "/login", produces = MediaType.APPLICATION_JSON)
-    public HttpResponse<?> login(@QueryValue("username") String username,@QueryValue("password") String password) {
-        AccountDTO account = accountService.loginbyEmail(username,password);
+    public HttpResponse<?> login(@QueryValue("username") String username, @QueryValue("password") String password) {
+        AccountDTO account = accountService.loginbyEmail(username, password);
         if (account != null) {
             return HttpResponse.ok(account);
         } else {
@@ -69,7 +71,7 @@ public class UserController {
             } else {
                 return HttpResponse.badRequest(Map.of("result", result));
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return HttpResponse.serverError("Error: " + e.getMessage());
         }
     }
@@ -84,10 +86,33 @@ public class UserController {
             return HttpResponse.badRequest(Map.of("result", "FullName is null or empty"));
         }
         Account updatedAccount = accountService.updateAccount(id, updateDTO);
-        if(updatedAccount!=null){
+        if (updatedAccount != null) {
             return HttpResponse.ok(Map.of("result", updatedAccount));
-        }else{
-            return HttpResponse.badRequest(Map.of( "result","Account null"));
+        } else {
+            return HttpResponse.badRequest(Map.of("result", "Account null"));
+        }
+    }
+
+    @Post(value = "/newPassword", produces = MediaType.APPLICATION_JSON)
+    public HttpResponse<?> newPassword(@QueryValue("email") String email,
+                                       @Body newpassWordDTO newpassWordDTO) {
+        AccountDTO accountDTO = accountService.findbyEmail(email);
+        if (accountService.findbyEmail(email) == null) {
+            return HttpResponse.badRequest(Map.of("result", "Tai khoan khong ton tai"));
+        } else {
+            try {
+                if (BCrypt.checkpw(accountDTO.getPassword(), newpassWordDTO.getPassword())) {
+                    return HttpResponse.badRequest(Map.of("result", "The password is incorrect"));
+                }
+                String result = accountService.changPassword(email, newpassWordDTO.getPassword());
+                if (result.equals("successfully")) {
+                    return HttpResponse.ok(Map.of("result", result));
+                }else{
+                    return HttpResponse.badRequest(Map.of("result", result));
+                }
+            } catch (Exception e) {
+                return HttpResponse.serverError("Error: " + e.getMessage());
+            }
         }
     }
 }
