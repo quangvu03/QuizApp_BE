@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 @Singleton
-@Mapper(componentModel = "micronaut", uses = DateMapper.class)
+@Mapper(componentModel = "jsr330", uses = DateMapper.class)
 public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 

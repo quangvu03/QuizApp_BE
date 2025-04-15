@@ -20,9 +20,6 @@ public class Quiz {
     @Column(name = "title", nullable = true, length = 255)
     private String title;
 
-    @Column(name = "type", nullable = false)
-    private String type;
-
     @Column(name = "score", nullable = true)
     private Integer score;
 
@@ -59,13 +56,6 @@ public class Quiz {
         this.title = title;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 
     public Integer getScore() {
         return score;
@@ -104,11 +94,11 @@ public class Quiz {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Quiz that = (Quiz) o;
-        return id == that.id && Objects.equals(userId, that.userId) && Objects.equals(title, that.title) && Objects.equals(type, that.type) && Objects.equals(score, that.score) && Objects.equals(createdAt, that.createdAt) && Objects.equals(content, that.content) && Objects.equals(level, that.level);
+        return id == that.id && Objects.equals(userId, that.userId) && Objects.equals(title, that.title) && Objects.equals(score, that.score) && Objects.equals(createdAt, that.createdAt) && Objects.equals(content, that.content) && Objects.equals(level, that.level);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userId, title, type, score, createdAt, content, level);
+        return Objects.hash(id, userId, title, score, createdAt, content, level);
     }
 }

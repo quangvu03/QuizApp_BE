@@ -37,7 +37,7 @@ public class UserController {
         if (account != null) {
             return HttpResponse.ok(Map.of("result", account));
         } else {
-            return HttpResponse.badRequest(Map.of("result", "not found"));
+            return HttpResponse.ok(Map.of("result", "not found"));
         }
     }
 
