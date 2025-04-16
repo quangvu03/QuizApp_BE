@@ -19,9 +19,9 @@ import java.util.Optional;
 
 
 
-
     @Controller("/api/upload")
     public class ImageController {
+        private static final String UPLOAD_DIR = "uploads/images";
 
         private final UserRepository userRepository;
         private final SaveImageService fileStorageService;
@@ -32,13 +32,13 @@ import java.util.Optional;
             this.fileStorageService = fileStorageService;
         }
 
-        @Post(value = "/uploadAvatar/{userId}", consumes = MediaType.MULTIPART_FORM_DATA)
+        @Post(value = "/uploadAvatar/{username}", consumes = MediaType.MULTIPART_FORM_DATA)
         @ExecuteOn(TaskExecutors.IO)
         public HttpResponse<Map<String, Object>> uploadAvatar(
                 @Part("avatar") CompletedFileUpload file,
-                @PathVariable("userId") Long userId) {
+                @PathVariable("username") String username) {
             try {
-                Optional<Account> accountOptional = userRepository.findById(userId);
+                Optional<Account> accountOptional = userRepository.findByUserName(username);
                 if (accountOptional.isEmpty()) {
                     Map<String, Object> error = new HashMap<>();
                     error.put("error", "User not found");
@@ -52,16 +52,13 @@ import java.util.Optional;
                     return HttpResponse.badRequest(error);
                 }
 
-                // Lưu file ảnh
                 byte[] fileBytes = file.getBytes();
                 String fileName = file.getFilename() != null ? file.getFilename() : "avatar.jpg";
                 String avatarUrl = fileStorageService.saveFile(fileBytes, fileName);
 
-                // Cập nhật avatar trong database
                 user.setAvatar(avatarUrl);
                 userRepository.update(user);
 
-                // Trả về URL của ảnh
                 Map<String, Object> response = new HashMap<>();
                 response.put("avatarUrl", avatarUrl);
                 return HttpResponse.ok(response);
