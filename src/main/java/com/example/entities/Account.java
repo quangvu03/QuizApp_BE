@@ -34,6 +34,9 @@ public class Account {
     @Column(name = "phone")
     private String phone;
 
+    @Column(name = "avatar")
+    private String avatar;
+
     public Long getId() {
         return this.id;
     }
@@ -72,6 +75,14 @@ public class Account {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public String getEmail() {
