@@ -13,15 +13,12 @@ public class Quiz {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
-    private long id;
+    private Long id;
     @Column(name = "userId", nullable = true)
     private Long userId;
 
     @Column(name = "title", nullable = true, length = 255)
     private String title;
-
-    @Column(name = "score", nullable = true)
-    private Integer score;
 
     @Column(name = "createdAt", nullable = true)
     private Timestamp createdAt;
@@ -32,11 +29,22 @@ public class Quiz {
     @Column(name = "level", nullable = true)
     private Integer level;
 
-    public long getId() {
+    @Column(name = "image", nullable = true)
+    private String image;
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -56,14 +64,6 @@ public class Quiz {
         this.title = title;
     }
 
-
-    public Integer getScore() {
-        return score;
-    }
-
-    public void setScore(Integer score) {
-        this.score = score;
-    }
 
     public Timestamp getCreatedAt() {
         return createdAt;
@@ -94,11 +94,11 @@ public class Quiz {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Quiz that = (Quiz) o;
-        return id == that.id && Objects.equals(userId, that.userId) && Objects.equals(title, that.title) && Objects.equals(score, that.score) && Objects.equals(createdAt, that.createdAt) && Objects.equals(content, that.content) && Objects.equals(level, that.level);
+        return id == that.id && Objects.equals(userId, that.userId) && Objects.equals(title, that.title) && Objects.equals(createdAt, that.createdAt) && Objects.equals(content, that.content) && Objects.equals(level, that.level);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userId, title, score, createdAt, content, level);
+        return Objects.hash(id, userId, title, createdAt, content, level);
     }
 }

@@ -3,7 +3,7 @@ package com.example.dtos;
 import io.micronaut.serde.annotation.Serdeable;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 @Serdeable
 
 @Data
@@ -12,10 +12,18 @@ public class QuizDTO {
     private Long userId;
     private String title;
     private String type;
-    private Integer score;
-    private LocalDateTime createdAt;
+    private Timestamp createdAt;
     private String content;
     private Integer level;
+    private String image;
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     public Long getId() {
         return id;
@@ -49,19 +57,11 @@ public class QuizDTO {
         this.type = type;
     }
 
-    public Integer getScore() {
-        return score;
-    }
-
-    public void setScore(Integer score) {
-        this.score = score;
-    }
-
-    public LocalDateTime getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
