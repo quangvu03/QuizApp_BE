@@ -26,9 +26,6 @@ public class Quiz {
     @Column(name = "content", nullable = true, length = -1)
     private String content;
 
-    @Column(name = "level", nullable = true)
-    private Integer level;
-
     @Column(name = "image", nullable = true)
     private String image;
 
@@ -81,24 +78,17 @@ public class Quiz {
         this.content = content;
     }
 
-    public Integer getLevel() {
-        return level;
-    }
-
-    public void setLevel(Integer level) {
-        this.level = level;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Quiz that = (Quiz) o;
-        return id == that.id && Objects.equals(userId, that.userId) && Objects.equals(title, that.title) && Objects.equals(createdAt, that.createdAt) && Objects.equals(content, that.content) && Objects.equals(level, that.level);
+        return id == that.id && Objects.equals(userId, that.userId) && Objects.equals(title, that.title) && Objects.equals(createdAt, that.createdAt) && Objects.equals(content, that.content);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userId, title, createdAt, content, level);
+        return Objects.hash(id, userId, title, createdAt, content);
     }
 }

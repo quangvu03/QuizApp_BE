@@ -8,7 +8,7 @@ import io.micronaut.data.jpa.repository.JpaRepository;
 @Repository
 public interface QuizRepository extends JpaRepository<Quiz, Long> {
 
-    @Query(value = "SELECT COUNT(*) FROM quiz WHERE userI   d = :userId", nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) FROM quiz WHERE userId = :userId", nativeQuery = true)
     int countByUserId(Long userId);
 
 

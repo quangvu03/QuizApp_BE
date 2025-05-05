@@ -7,10 +7,29 @@ import lombok.*;
 @Data
 @Serdeable
 public class getListQuizDTO {
+    private long id;
     private String title;
     private int numberquiz;
     private String image;
     private String userName;
+    private String imageUser;
+
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getImageUser() {
+        return imageUser;
+    }
+
+    public void setImageUser(String imageUser) {
+        this.imageUser = imageUser;
+    }
 
     public String getTitle() {
         return title;

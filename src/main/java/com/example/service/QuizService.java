@@ -1,5 +1,6 @@
 package com.example.service;
 
+import com.example.dtos.reponseDTO.detailQuiz;
 import com.example.dtos.reponseDTO.getListQuizDTO;
 import com.example.dtos.reponseDTO.getListUserQuizDTO;
 import com.example.entities.Quiz;
@@ -7,9 +8,11 @@ import com.example.entities.Quiz;
 import java.util.List;
 
 public interface QuizService {
-    public List<getListQuizDTO> findAll();
+     List<getListQuizDTO> findAll();
 
-    public List<getListUserQuizDTO> findAllbyUser();
+     List<getListUserQuizDTO> findAllbyUser();
+
+    detailQuiz getdetailQuiz(long idQuiz);
 
 
 }

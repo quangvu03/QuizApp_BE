@@ -14,7 +14,6 @@ public class QuizDTO {
     private String type;
     private Timestamp createdAt;
     private String content;
-    private Integer level;
     private String image;
 
     public String getImage() {
@@ -73,11 +72,4 @@ public class QuizDTO {
         this.content = content;
     }
 
-    public Integer getLevel() {
-        return level;
-    }
-
-    public void setLevel(Integer level) {
-        this.level = level;
-    }
 }
