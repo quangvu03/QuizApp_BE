@@ -101,4 +101,17 @@ public class Quizquestion {
     public int hashCode() {
         return Objects.hash(id, quizId, title, type, level, createdAt, content);
     }
+
+    @Override
+    public String toString() {
+        return "Quizquestion{" +
+                "id=" + id +
+                ", quizId=" + quizId +
+                ", title='" + title + '\'' +
+                ", type='" + type + '\'' +
+                ", level=" + level +
+                ", createdAt=" + createdAt +
+                ", content='" + content + '\'' +
+                '}';
+    }
 }

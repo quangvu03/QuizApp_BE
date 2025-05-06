@@ -14,5 +14,9 @@ public interface QuizService {
 
     detailQuiz getdetailQuiz(long idQuiz);
 
+    List<getListQuizDTO> findQuizByName(String name);
+
+    List<getListUserQuizDTO> findQuizByUsername(String username);
+
 
 }

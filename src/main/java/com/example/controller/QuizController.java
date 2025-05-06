@@ -9,6 +9,7 @@ import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.PathVariable;
+import io.micronaut.http.annotation.QueryValue;
 import jakarta.inject.Inject;
 
 import java.util.List;
@@ -57,6 +58,33 @@ public class QuizController {
                 return HttpResponse.ok(Map.of("result", detailQuiz));
             } else {
                 return HttpResponse.badRequest(Map.of("result", "Không có chi tiết"));
+            }
+        } catch (Exception e) {
+            return HttpResponse.badRequest(Map.of("result", "Lỗi: " + e.getMessage()));
+        }
+    }
+
+    @Get("/findByName")
+    public HttpResponse<?> getDetailsQuiz(@QueryValue String name) {
+        try {
+            List<getListQuizDTO> listQuizDTOS = quizService.findQuizByName(name);
+            if (listQuizDTOS != null && !listQuizDTOS.isEmpty()) {
+                return HttpResponse.ok(Map.of("result", listQuizDTOS));
+            } else {
+                return HttpResponse.badRequest(Map.of("result", "Không có dữ liệu"));
+            }
+        } catch (Exception e) {
+            return HttpResponse.badRequest(Map.of("result", "Lỗi: " + e.getMessage()));
+        }
+    }
+    @Get("/findByUserName")
+    public HttpResponse<?> findByUserName(@QueryValue String username) {
+        try {
+            List<getListUserQuizDTO> listQuizDTOS = quizService.findQuizByUsername(username);
+            if (listQuizDTOS != null && !listQuizDTOS.isEmpty()) {
+                return HttpResponse.ok(Map.of("result", listQuizDTOS));
+            } else {
+                return HttpResponse.badRequest(Map.of("result", "Không có dữ liệu"));
             }
         } catch (Exception e) {
             return HttpResponse.badRequest(Map.of("result", "Lỗi: " + e.getMessage()));

@@ -42,7 +42,7 @@ public class QuizserviceImple implements QuizService {
     @Override
     public List<getListQuizDTO> findAll() {
         List<Quiz> quizList = quizRepository.findAll();
-        List<getListQuizDTO> resultList = new ArrayList<getListQuizDTO>();
+        List<getListQuizDTO> resultList = new ArrayList<>();
         for (Quiz quiz : quizList) {
             int numberOfQuestions = quizQuestion.countByQuizId(quiz.getId());
             Optional<Account> username = userRepository.findById(quiz.getUserId());
@@ -82,5 +82,41 @@ public class QuizserviceImple implements QuizService {
         long numberfavorite = favoriteRepositoty.countByQuizId(id);
         return new detailQuiz(id, quiz.getTitle(), quiz.getContent(), quiz.getCreatedAt(), quiz.getImage(), account.getUserName(), numberquestion, account.getAvatar(), numberfavorite);
     }
+
+    @Override
+    public List<getListQuizDTO> findQuizByName(String name) {
+        List<Quiz> quizList ;
+        quizList = quizRepository.searchByTitleLike(name);
+        List<getListQuizDTO> resultList = new ArrayList<>();
+        for (Quiz quiz : quizList) {
+            int numberOfQuestions = quizQuestion.countByQuizId(quiz.getId());
+            Optional<Account> username = userRepository.findById(quiz.getUserId());
+            Account account = username.get();
+            getListQuizDTO dto = quizMapper.toGetListQuizDTO(quiz);
+            dto.setId(quiz.getId());
+            dto.setNumberquiz(numberOfQuestions);
+            dto.setUserName(account.getUserName());
+            dto.setTitle(quiz.getTitle());
+            dto.setImage(quiz.getImage());
+            dto.setImageUser(account.getAvatar());
+            resultList.add(dto);
+        }
+        return resultList;
+    }
+
+    @Override
+    public List<getListUserQuizDTO> findQuizByUsername(String username) {
+        List<Account> user = userRepository.findAccountsByUsernameContaining(username);
+        List<getListUserQuizDTO> resultList = new ArrayList<>();
+        for (Account account : user) {
+            getListUserQuizDTO dto = new getListUserQuizDTO();
+            dto.setUsername(account.getUserName());
+            dto.setNumberquiz(quizRepository.countByUserId(account.getId()));
+            dto.setImage(account.getAvatar());
+            resultList.add(dto);
+        }
+        return resultList;
+    }
+
 }
 
