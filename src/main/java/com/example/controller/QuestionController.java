@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.dtos.reponseDTO.demoQuiz;
+import com.example.dtos.reponseDTO.examResponse;
 import com.example.repositories.QuizAnswerRepository;
 import com.example.service.QuizQuestionService;
 import io.micronaut.http.HttpResponse;
@@ -19,24 +20,45 @@ public class QuestionController {
     QuizQuestionService quizQuestionService;
 
     @Get("/getDeilQuiz/{id}")
-    public HttpResponse<?> getDetailsQuiz(@PathVariable("id") Long idquiz){
-
-        List<demoQuiz> detailQuizAnswerList = quizQuestionService.demoQuiz(idquiz);
+    public HttpResponse<?> getDetailsQuiz(@PathVariable("id") Long idquiz) {
         try {
-            if(detailQuizAnswerList.isEmpty()){
+            List<demoQuiz> detailQuizAnswerList = quizQuestionService.demoQuiz(idquiz);
+
+            if (detailQuizAnswerList.isEmpty()) {
                 return HttpResponse.badRequest(
                         Map.of("result", "Không có câu hỏi nào")
                 );
-            }else{
-                return HttpResponse.ok(
-                        Map.of("result", detailQuizAnswerList)
-                );
             }
+            List<demoQuiz> limitedList = detailQuizAnswerList.size() > 5
+                    ? detailQuizAnswerList.subList(0, 5)
+                    : detailQuizAnswerList;
 
-        }catch (Exception e){
+            return HttpResponse.ok(
+                    Map.of("result", limitedList)
+            );
+        } catch (Exception e) {
             return HttpResponse.badRequest(
-                    Map.of("result", "Lỗi: "+e.getMessage())
+                    Map.of("result", "Lỗi: " + e.getMessage())
+            );
+        }
+    }
+
+
+    @Get("/getExam/{id}")
+    public HttpResponse<?> getExam(@PathVariable("id") Long idquiz) {
+        try {
+            examResponse examResponse = quizQuestionService.getExam(idquiz);
+
+            if (examResponse == null) {
+                return HttpResponse.ok(Map.of("result", "không có dữ liệu"));
+            } else {
+                return HttpResponse.ok(examResponse);
+            }
+        } catch (Exception e) {
+            return HttpResponse.badRequest(
+                    Map.of("result", "Lỗi: " + e.getMessage())
             );
         }
     }
 }
+

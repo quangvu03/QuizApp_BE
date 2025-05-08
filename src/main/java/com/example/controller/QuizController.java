@@ -12,6 +12,7 @@ import io.micronaut.http.annotation.PathVariable;
 import io.micronaut.http.annotation.QueryValue;
 import jakarta.inject.Inject;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +26,6 @@ public class QuizController {
     public HttpResponse<?> finallQuiz() {
         try {
             List<getListQuizDTO> getListQuizDTOS = quizService.findAll();
-            System.out.println("getListQuizDTOS: "+ getListQuizDTOS);
             if (!getListQuizDTOS.isEmpty()) {
                 return HttpResponse.ok(Map.of("result", getListQuizDTOS));
             } else {
@@ -65,27 +65,29 @@ public class QuizController {
     }
 
     @Get("/findByName")
-    public HttpResponse<?> getDetailsQuiz(@QueryValue String name) {
+    public HttpResponse<?> findQuizByname(@QueryValue String name) {
         try {
             List<getListQuizDTO> listQuizDTOS = quizService.findQuizByName(name);
-            if (listQuizDTOS != null && !listQuizDTOS.isEmpty()) {
+//            if (listQuizDTOS != null && !listQuizDTOS.isEmpty()) {
                 return HttpResponse.ok(Map.of("result", listQuizDTOS));
-            } else {
-                return HttpResponse.badRequest(Map.of("result", "Không có dữ liệu"));
-            }
+//            }
+//            else {
+//                return HttpResponse.ok(Map.of("result", new ArrayList<>(), "message", "Không có dữ liệu"));
+//            }
         } catch (Exception e) {
             return HttpResponse.badRequest(Map.of("result", "Lỗi: " + e.getMessage()));
         }
     }
+
     @Get("/findByUserName")
     public HttpResponse<?> findByUserName(@QueryValue String username) {
         try {
             List<getListUserQuizDTO> listQuizDTOS = quizService.findQuizByUsername(username);
-            if (listQuizDTOS != null && !listQuizDTOS.isEmpty()) {
+//            if (listQuizDTOS != null && !listQuizDTOS.isEmpty()) {
                 return HttpResponse.ok(Map.of("result", listQuizDTOS));
-            } else {
-                return HttpResponse.badRequest(Map.of("result", "Không có dữ liệu"));
-            }
+//            } else {
+//                return HttpResponse.ok(Map.of("result", "Không có dữ liệu"));
+//            }
         } catch (Exception e) {
             return HttpResponse.badRequest(Map.of("result", "Lỗi: " + e.getMessage()));
         }

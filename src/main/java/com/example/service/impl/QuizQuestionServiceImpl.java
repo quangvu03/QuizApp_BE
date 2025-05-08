@@ -1,6 +1,8 @@
 package com.example.service.impl;
 
 import com.example.dtos.reponseDTO.demoQuiz;
+import com.example.dtos.reponseDTO.examQuizDTO;
+import com.example.dtos.reponseDTO.examResponse;
 import com.example.dtos.requestDTO.demoAnswer;
 import com.example.entities.Quizquestion;
 import com.example.repositories.QuizAnswerRepository;
@@ -26,10 +28,10 @@ public class QuizQuestionServiceImpl implements QuizQuestionService {
     QuizAnswerRepository quizAnswerRepository;
 
 
+
     @Override
     public List<demoQuiz> demoQuiz(long idQuiz) {
         List<Quizquestion> quizquestions = quizQuestionRepository.findByQuizId(idQuiz);
-        System.out.println("list: "+quizquestions);
         List<demoQuiz> demoQuizs = new ArrayList<>();
         List<demoAnswer> demoAnswer;
 
@@ -50,4 +52,31 @@ public class QuizQuestionServiceImpl implements QuizQuestionService {
         }
         return demoQuizs;
     }
+
+    @Override
+    public examResponse getExam(Long idQuiz) {
+        List<Quizquestion> quizquestions = quizQuestionRepository.findByQuizId(idQuiz);
+        List<examQuizDTO> examQuizDTOs = new ArrayList<>();
+        examResponse examResponse = new examResponse();  // SỬA ở đây
+
+        for (Quizquestion quizquestion : quizquestions) {
+            examQuizDTO examQuizDTO = new examQuizDTO();
+
+            examQuizDTO.setId(quizquestion.getQuizId());
+            examQuizDTO.setTitle(quizquestion.getTitle());
+            examQuizDTO.setType(quizquestion.getType());
+            examQuizDTO.setLevel(quizquestion.getLevel());
+            examQuizDTO.setContent(quizquestion.getContent());
+
+            List<demoAnswer> answers = quizAnswerRepository.findByQuizIdAndQuestionId(idQuiz, quizquestion.getId());
+            examQuizDTO.setAnswers(answers);
+
+            examQuizDTOs.add(examQuizDTO);
+        }
+
+        examResponse.setExamQuizDTO(examQuizDTOs);
+        examResponse.setNumberexamQuizDTO(quizQuestionRepository.countByQuizId(idQuiz));
+        return examResponse;
+    }
+
 }
