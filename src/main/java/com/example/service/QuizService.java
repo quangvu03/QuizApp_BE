@@ -8,9 +8,9 @@ import com.example.entities.Quiz;
 import java.util.List;
 
 public interface QuizService {
-     List<getListQuizDTO> findAll();
+    List<getListQuizDTO> findAll();
 
-     List<getListUserQuizDTO> findAllbyUser();
+    List<getListUserQuizDTO> findAllbyUser();
 
     detailQuiz getdetailQuiz(long idQuiz);
 

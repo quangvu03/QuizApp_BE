@@ -3,46 +3,48 @@ package com.example.entities;
 import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.*;
 
-import java.sql.Timestamp;
-import java.util.Objects;
-@Serdeable
+import java.time.LocalDateTime;
 
+@Serdeable
 @Entity
-@Table(name = "take", catalog = "")
+@Table(name = "take")
 public class Take {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
-    private long id;
-    
-    @Column(name = "userId", nullable = true)
-    private Long userId;
-    
-    @Column(name = "quizId", nullable = true)
-    private Long quizId;
-    
-    @Column(name = "status", nullable = true)
-    private Byte status;
-    
-    @Column(name = "score", nullable = true)
-    private Integer score;
-    
-    @Column(name = "startedAt", nullable = true)
-    private Timestamp startedAt;
-    
-    @Column(name = "finishedAt", nullable = true)
-    private Timestamp finishedAt;
+    @Column(name = "id")
+    private Long id;
 
-    public long getId() {
-        return id;
+    @Column(name = "userId")
+    private Long userId;
+
+    @Column(name = "quizId")
+    private Long quizId;
+
+    @Column(name = "status")
+    private Byte status;
+
+    @Column(name = "score")
+    private Integer score;
+
+    @Column(name = "time")
+    private String time;
+
+    @Column(name = "correct")
+    private Integer correct;
+
+    @Column(name = "finishedAt")
+    private LocalDateTime finishedAt;
+
+    public Long getId() {
+        return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
     public Long getUserId() {
-        return userId;
+        return this.userId;
     }
 
     public void setUserId(Long userId) {
@@ -50,7 +52,7 @@ public class Take {
     }
 
     public Long getQuizId() {
-        return quizId;
+        return this.quizId;
     }
 
     public void setQuizId(Long quizId) {
@@ -58,7 +60,7 @@ public class Take {
     }
 
     public Byte getStatus() {
-        return status;
+        return this.status;
     }
 
     public void setStatus(Byte status) {
@@ -66,39 +68,34 @@ public class Take {
     }
 
     public Integer getScore() {
-        return score;
+        return this.score;
     }
 
     public void setScore(Integer score) {
         this.score = score;
     }
 
-    public Timestamp getStartedAt() {
-        return startedAt;
+    public String getTime() {
+        return this.time;
     }
 
-    public void setStartedAt(Timestamp startedAt) {
-        this.startedAt = startedAt;
+    public void setTime(String time) {
+        this.time = time;
     }
 
-    public Timestamp getFinishedAt() {
-        return finishedAt;
+    public Integer getCorrect() {
+        return this.correct;
     }
 
-    public void setFinishedAt(Timestamp finishedAt) {
+    public void setCorrect(Integer correct) {
+        this.correct = correct;
+    }
+
+    public LocalDateTime getFinishedAt() {
+        return this.finishedAt;
+    }
+
+    public void setFinishedAt(LocalDateTime finishedAt) {
         this.finishedAt = finishedAt;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Take that = (Take) o;
-        return id == that.id && Objects.equals(userId, that.userId) && Objects.equals(quizId, that.quizId) && Objects.equals(status, that.status) && Objects.equals(score, that.score) && Objects.equals(startedAt, that.startedAt) && Objects.equals(finishedAt, that.finishedAt);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, userId, quizId, status, score, startedAt, finishedAt);
     }
 }

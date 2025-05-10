@@ -1,23 +1,22 @@
 package com.example.dtos;
 
 import io.micronaut.serde.annotation.Serdeable;
-import lombok.Data;
 
 import java.time.LocalDateTime;
-@Serdeable
 
-@Data
+@Serdeable
 public class TakeDTO {
     private Long id;
     private Long userId;
     private Long quizId;
     private Byte status;
     private Integer score;
-    private LocalDateTime startedAt;
+    private String time;
+    private Integer correct;
     private LocalDateTime finishedAt;
 
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(Long id) {
@@ -25,7 +24,7 @@ public class TakeDTO {
     }
 
     public Long getUserId() {
-        return userId;
+        return this.userId;
     }
 
     public void setUserId(Long userId) {
@@ -33,7 +32,7 @@ public class TakeDTO {
     }
 
     public Long getQuizId() {
-        return quizId;
+        return this.quizId;
     }
 
     public void setQuizId(Long quizId) {
@@ -41,7 +40,7 @@ public class TakeDTO {
     }
 
     public Byte getStatus() {
-        return status;
+        return this.status;
     }
 
     public void setStatus(Byte status) {
@@ -49,23 +48,31 @@ public class TakeDTO {
     }
 
     public Integer getScore() {
-        return score;
+        return this.score;
     }
 
     public void setScore(Integer score) {
         this.score = score;
     }
 
-    public LocalDateTime getStartedAt() {
-        return startedAt;
+    public String getTime() {
+        return this.time;
     }
 
-    public void setStartedAt(LocalDateTime startedAt) {
-        this.startedAt = startedAt;
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public Integer getCorrect() {
+        return this.correct;
+    }
+
+    public void setCorrect(Integer correct) {
+        this.correct = correct;
     }
 
     public LocalDateTime getFinishedAt() {
-        return finishedAt;
+        return this.finishedAt;
     }
 
     public void setFinishedAt(LocalDateTime finishedAt) {

@@ -57,12 +57,12 @@ public class QuizQuestionServiceImpl implements QuizQuestionService {
     public examResponse getExam(Long idQuiz) {
         List<Quizquestion> quizquestions = quizQuestionRepository.findByQuizId(idQuiz);
         List<examQuizDTO> examQuizDTOs = new ArrayList<>();
-        examResponse examResponse = new examResponse();  // SỬA ở đây
+        examResponse examResponse = new examResponse();
 
         for (Quizquestion quizquestion : quizquestions) {
             examQuizDTO examQuizDTO = new examQuizDTO();
 
-            examQuizDTO.setId(quizquestion.getQuizId());
+            examQuizDTO.setId(quizquestion.getId());
             examQuizDTO.setTitle(quizquestion.getTitle());
             examQuizDTO.setType(quizquestion.getType());
             examQuizDTO.setLevel(quizquestion.getLevel());
