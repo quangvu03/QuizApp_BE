@@ -1,5 +1,6 @@
 package com.example.service;
 
+import com.example.dtos.QuizDTO;
 import com.example.dtos.reponseDTO.detailQuiz;
 import com.example.dtos.reponseDTO.getListQuizDTO;
 import com.example.dtos.reponseDTO.getListUserQuizDTO;
@@ -17,6 +18,8 @@ public interface QuizService {
     List<getListQuizDTO> findQuizByName(String name);
 
     List<getListUserQuizDTO> findQuizByUsername(String username);
+
+    QuizDTO createQuiz(QuizDTO quizDTO);
 
 
 }

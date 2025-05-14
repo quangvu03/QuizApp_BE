@@ -1,6 +1,7 @@
 package com.example.service.impl;
 
 import com.example.configurations.QuizMapper;
+import com.example.dtos.QuizDTO;
 import com.example.dtos.reponseDTO.detailQuiz;
 import com.example.dtos.reponseDTO.getListQuizDTO;
 import com.example.dtos.reponseDTO.getListUserQuizDTO;
@@ -11,10 +12,10 @@ import com.example.repositories.QuizQuestionRepository;
 import com.example.repositories.QuizRepository;
 import com.example.repositories.UserRepository;
 import com.example.service.QuizService;
-import io.micronaut.core.annotation.NonNull;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -117,6 +118,24 @@ public class QuizserviceImple implements QuizService {
         }
         return resultList;
     }
+
+    @Override
+    public QuizDTO createQuiz(QuizDTO quizDTO) {
+        Quiz quiz = quizMapper.toEntity(quizDTO);
+        try {
+            if (quiz.getTitle().isEmpty()) {
+                throw new Exception("Tiêu đề rỗng");
+            }
+            if(quiz.getContent().isEmpty()){
+                throw new Exception("Thiếu mô tả");
+            }
+            quiz.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+            return quizMapper.toDTO(quizRepository.save(quiz));
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
 
 }
 

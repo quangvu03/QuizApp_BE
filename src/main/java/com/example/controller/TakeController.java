@@ -1,7 +1,6 @@
 package com.example.controller;
 
 import com.example.dtos.TakeDTO;
-import com.example.entities.Take;
 import com.example.service.TakeService;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.*;
@@ -15,7 +14,7 @@ public class TakeController {
     @Inject
     TakeService takeService;
 
-    @Post("saveTake")
+    @Post("/saveTake")
     public HttpResponse<?> saveTake(@Body TakeDTO takeDTO) {
         try {
             return HttpResponse.ok(Map.of("result", takeService.saveTake(takeDTO)));
@@ -24,7 +23,7 @@ public class TakeController {
         }
     }
 
-    @Get("getTakeById/{idTake}")
+    @Get("/getTakeById/{idTake}")
     public HttpResponse<?> findById(@PathVariable("idTake") Long idTake) {
         try {
             return HttpResponse.ok(Map.of("result", takeService.findTakeById(idTake)));
@@ -33,4 +32,21 @@ public class TakeController {
         }
     }
 
+    @Get("/getDetailsTake")
+    public HttpResponse<?> getDetailsTake(@QueryValue("idTake") Long idTake) {
+        try {
+            return HttpResponse.ok(Map.of("result", takeService.getDetailTake(idTake)));
+        } catch (Exception e) {
+            return HttpResponse.badRequest(Map.of("result", "Lỗi: " + e.getMessage()));
+        }
+    }
+
+    @Get("/getAvgTake")
+    public HttpResponse<?> getavgTake(@QueryValue("idUser") Long idUser) {
+        try {
+            return HttpResponse.ok(Map.of("result", takeService.getAvgTake(idUser)));
+        } catch (Exception e) {
+            return HttpResponse.badRequest(Map.of("result", "Lỗi: " + e.getMessage()));
+        }
+    }
 }

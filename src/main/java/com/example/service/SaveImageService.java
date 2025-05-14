@@ -1,6 +1,7 @@
 package com.example.service;
 
 import io.micronaut.context.annotation.Value;
+import io.micronaut.http.multipart.CompletedFileUpload;
 import jakarta.inject.Singleton;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -40,8 +41,26 @@ public class SaveImageService {
         Files.write(filePath, fileBytes);
         LOG.info("Saved file to: {}", filePath);
 
-//        return baseUrl + "/" + newFileName;
         return newFileName;
 
+    }
+
+    public String uploadImageQuiz(CompletedFileUpload file) throws IOException {
+        if (file.getSize() > 5 * 1024 * 1024) {
+            throw new IOException("File too large, max 5MB");
+        }
+
+        String originalFileName = file.getFilename() != null ? file.getFilename() : "avatar.jpg";
+        String uniqueFileName = System.currentTimeMillis() + "_" + originalFileName;
+
+        Path uploadDir = Paths.get("uploads");
+        if (!Files.exists(uploadDir)) {
+            Files.createDirectories(uploadDir);
+        }
+
+        Path filePath = uploadDir.resolve(uniqueFileName);
+        Files.write(filePath, file.getBytes());
+
+        return uniqueFileName;
     }
 }

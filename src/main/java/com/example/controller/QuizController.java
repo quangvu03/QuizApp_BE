@@ -1,17 +1,22 @@
 package com.example.controller;
 
 
+import com.example.dtos.QuizDTO;
 import com.example.dtos.reponseDTO.detailQuiz;
 import com.example.dtos.reponseDTO.getListQuizDTO;
 import com.example.dtos.reponseDTO.getListUserQuizDTO;
 import com.example.service.QuizService;
+import com.example.service.SaveImageService;
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.http.HttpResponse;
-import io.micronaut.http.annotation.Controller;
-import io.micronaut.http.annotation.Get;
-import io.micronaut.http.annotation.PathVariable;
-import io.micronaut.http.annotation.QueryValue;
+import io.micronaut.http.MediaType;
+import io.micronaut.http.annotation.*;
+import io.micronaut.http.multipart.CompletedFileUpload;
+import io.micronaut.scheduling.TaskExecutors;
+import io.micronaut.scheduling.annotation.ExecuteOn;
 import jakarta.inject.Inject;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +26,9 @@ public class QuizController {
 
     @Inject
     QuizService quizService;
+
+    @Inject
+    SaveImageService saveImageService;
 
     @Get("/findAll")
     public HttpResponse<?> finallQuiz() {
@@ -69,7 +77,7 @@ public class QuizController {
         try {
             List<getListQuizDTO> listQuizDTOS = quizService.findQuizByName(name);
 //            if (listQuizDTOS != null && !listQuizDTOS.isEmpty()) {
-                return HttpResponse.ok(Map.of("result", listQuizDTOS));
+            return HttpResponse.ok(Map.of("result", listQuizDTOS));
 //            }
 //            else {
 //                return HttpResponse.ok(Map.of("result", new ArrayList<>(), "message", "Không có dữ liệu"));
@@ -84,7 +92,7 @@ public class QuizController {
         try {
             List<getListUserQuizDTO> listQuizDTOS = quizService.findQuizByUsername(username);
 //            if (listQuizDTOS != null && !listQuizDTOS.isEmpty()) {
-                return HttpResponse.ok(Map.of("result", listQuizDTOS));
+            return HttpResponse.ok(Map.of("result", listQuizDTOS));
 //            } else {
 //                return HttpResponse.ok(Map.of("result", "Không có dữ liệu"));
 //            }
@@ -92,4 +100,29 @@ public class QuizController {
             return HttpResponse.badRequest(Map.of("result", "Lỗi: " + e.getMessage()));
         }
     }
+
+
+
+    @Post(value = "/createQuiz", consumes = MediaType.MULTIPART_FORM_DATA)
+    @ExecuteOn(TaskExecutors.IO)
+    public HttpResponse<?> createQuiz(@Body QuizDTO quizDTO, @Nullable @Part("avatar") CompletedFileUpload file) {
+        try {
+            // Đảm bảo rằng chuỗi là UTF-8
+            if (quizDTO.getTitle() != null) {
+                quizDTO.setTitle(new String(quizDTO.getTitle().getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8));
+            }
+            if (quizDTO.getContent() != null) {
+                quizDTO.setContent(new String(quizDTO.getContent().getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8));
+            }
+            if (file != null && file.getFilename() != null) {
+                String nameImage = saveImageService.uploadImageQuiz(file);
+                quizDTO.setImage(nameImage);
+            }
+            System.out.println("quizDTO: "+quizDTO);
+            return HttpResponse.ok(Map.of("result", quizService.createQuiz(quizDTO)));
+        } catch (Exception e) {
+            return HttpResponse.badRequest(Map.of("result", "Lỗi: " + e.getMessage()));
+        }
+    }
+
 }
