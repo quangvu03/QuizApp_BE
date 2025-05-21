@@ -21,5 +21,7 @@ public interface QuizService {
 
     QuizDTO createQuiz(QuizDTO quizDTO);
 
+    List<Quiz> findByUserId(Long idUser);
+
 
 }

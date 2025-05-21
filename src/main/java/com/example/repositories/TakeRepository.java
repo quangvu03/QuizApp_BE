@@ -13,5 +13,12 @@ public interface TakeRepository extends CrudRepository<Take, Long> {
     @Query(value = "SELECT * FROM take WHERE userId = :userId", nativeQuery = true)
     List<Take> getListTakeByUserId(Long userId);
 
+    @Query(value = """
+        SELECT COUNT(*) AS total_quizzes_taken FROM take
+        WHERE quizId IN ( SELECT id FROM quiz WHERE userId = :userId) """, nativeQuery = true)
+    long countTakesByQuizCreator( Long userId);
+
+
+
 
 }

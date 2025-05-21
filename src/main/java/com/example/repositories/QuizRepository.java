@@ -16,5 +16,6 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
     @Query("SELECT q FROM Quiz q WHERE LOWER(q.title) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     List<Quiz> searchByTitleLike(String keyword);
 
+    List<Quiz> findByUserId(Long userId);
 
 }

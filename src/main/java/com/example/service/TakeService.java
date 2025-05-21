@@ -5,8 +5,6 @@ import com.example.dtos.reponseDTO.ExamAnswerDTO;
 import com.example.dtos.reponseDTO.avgTake;
 import com.example.entities.Take;
 
-import java.util.List;
-
 public interface TakeService {
     Take saveTake(TakeDTO takeDTO);
 
@@ -16,5 +14,6 @@ public interface TakeService {
 
     avgTake getAvgTake(Long idUser);
 
+    long countTakesByQuizCreator(Long idUser);
 
     }

@@ -49,4 +49,13 @@ public class TakeController {
             return HttpResponse.badRequest(Map.of("result", "Lỗi: " + e.getMessage()));
         }
     }
+
+    @Get("/countTakesByQuizCreator")
+    public HttpResponse<?> countTakesByQuizCreator(@QueryValue("idUser") Long idUser) {
+        try {
+            return HttpResponse.ok(Map.of("result", takeService.countTakesByQuizCreator(idUser)));
+        } catch (Exception e) {
+            return HttpResponse.badRequest(Map.of("result", "Lỗi: " + e.getMessage()));
+        }
+    }
 }

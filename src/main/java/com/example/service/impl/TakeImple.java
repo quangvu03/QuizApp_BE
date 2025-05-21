@@ -6,7 +6,6 @@ import com.example.dtos.reponseDTO.ExamAnswerDTO;
 import com.example.dtos.reponseDTO.avgTake;
 import com.example.dtos.reponseDTO.detailsAnswer;
 import com.example.entities.Take;
-import com.example.entities.Takeanswer;
 import com.example.helper.TotalTime;
 import com.example.repositories.QuizAnswerRepository;
 import com.example.repositories.TakeAnswerRepository;
@@ -94,6 +93,16 @@ public class TakeImple implements TakeService {
             avgTaker.setAvgScore(avgScore);
             avgTaker.setAvgtime(TotalTime.sumTimes(totalTime));
             return avgTaker;
+        } catch (Exception e) {
+            throw new RuntimeException("Lỗi: " + e.getMessage());
+        }
+    }
+
+
+    @Override
+    public long countTakesByQuizCreator(Long idUser) {
+        try {
+            return takeRepository.countTakesByQuizCreator(idUser);
         } catch (Exception e) {
             throw new RuntimeException("Lỗi: " + e.getMessage());
         }

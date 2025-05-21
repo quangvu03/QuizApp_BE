@@ -51,14 +51,14 @@ public class SaveImageService {
         }
 
         String originalFileName = file.getFilename() != null ? file.getFilename() : "avatar.jpg";
-        String uniqueFileName = System.currentTimeMillis() + "_" + originalFileName;
+        String uniqueFileName = System.currentTimeMillis() + "_" + UUID.randomUUID().toString() + "_" + originalFileName;
 
-        Path uploadDir = Paths.get("uploads");
-        if (!Files.exists(uploadDir)) {
-            Files.createDirectories(uploadDir);
+        Path uploadDirs = Paths.get(uploadDir);
+        if (!Files.exists(uploadDirs)) {
+            Files.createDirectories(uploadDirs);
         }
 
-        Path filePath = uploadDir.resolve(uniqueFileName);
+        Path filePath = uploadDirs.resolve(uniqueFileName);
         Files.write(filePath, file.getBytes());
 
         return uniqueFileName;

@@ -136,6 +136,11 @@ public class QuizserviceImple implements QuizService {
         }
     }
 
+    @Override
+    public List<Quiz> findByUserId(Long idUser) {
+        return quizRepository.findByUserId(idUser);
+    }
+
 
 }
 

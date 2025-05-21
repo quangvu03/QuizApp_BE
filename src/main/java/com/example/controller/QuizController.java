@@ -5,6 +5,7 @@ import com.example.dtos.QuizDTO;
 import com.example.dtos.reponseDTO.detailQuiz;
 import com.example.dtos.reponseDTO.getListQuizDTO;
 import com.example.dtos.reponseDTO.getListUserQuizDTO;
+import com.example.entities.Quiz;
 import com.example.service.QuizService;
 import com.example.service.SaveImageService;
 import io.micronaut.core.annotation.Nullable;
@@ -101,8 +102,6 @@ public class QuizController {
         }
     }
 
-
-
     @Post(value = "/createQuiz", consumes = MediaType.MULTIPART_FORM_DATA)
     @ExecuteOn(TaskExecutors.IO)
     public HttpResponse<?> createQuiz(@Body QuizDTO quizDTO, @Nullable @Part("avatar") CompletedFileUpload file) {
@@ -120,6 +119,20 @@ public class QuizController {
             }
             System.out.println("quizDTO: "+quizDTO);
             return HttpResponse.ok(Map.of("result", quizService.createQuiz(quizDTO)));
+        } catch (Exception e) {
+            return HttpResponse.badRequest(Map.of("result", "Lỗi: " + e.getMessage()));
+        }
+    }
+
+    @Get("/findByUserId")
+    public HttpResponse<?> findByUserName(@QueryValue Long userId) {
+        try {
+            List<Quiz> quizList = quizService.findByUserId(userId);
+//            if (listQuizDTOS != null && !listQuizDTOS.isEmpty()) {
+            return HttpResponse.ok(Map.of("result", quizList));
+//            } else {
+//                return HttpResponse.ok(Map.of("result", "Không có dữ liệu"));
+//            }
         } catch (Exception e) {
             return HttpResponse.badRequest(Map.of("result", "Lỗi: " + e.getMessage()));
         }
