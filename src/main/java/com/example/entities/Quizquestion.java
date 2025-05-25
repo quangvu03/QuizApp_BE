@@ -8,7 +8,7 @@ import java.util.Objects;
 @Serdeable
 
 @Entity
-@Table(name = "quizquestion", catalog = "")
+@Table(name = "quizquestion")
 public class Quizquestion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -23,9 +23,6 @@ public class Quizquestion {
     
     @Column(name = "type", nullable = true)
     private String type;
-    
-    @Column(name = "level", nullable = true)
-    private Integer level;
     
     @Column(name = "createdAt", nullable = true)
     private Timestamp createdAt;
@@ -65,14 +62,6 @@ public class Quizquestion {
         this.type = type;
     }
 
-    public Integer getLevel() {
-        return level;
-    }
-
-    public void setLevel(Integer level) {
-        this.level = level;
-    }
-
     public Timestamp getCreatedAt() {
         return createdAt;
     }
@@ -94,12 +83,12 @@ public class Quizquestion {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Quizquestion that = (Quizquestion) o;
-        return id == that.id && Objects.equals(quizId, that.quizId) && Objects.equals(title, that.title) && Objects.equals(type, that.type) && Objects.equals(level, that.level) && Objects.equals(createdAt, that.createdAt) && Objects.equals(content, that.content);
+        return id == that.id && Objects.equals(quizId, that.quizId) && Objects.equals(title, that.title) && Objects.equals(type, that.type) && Objects.equals(createdAt, that.createdAt) && Objects.equals(content, that.content);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, quizId, title, type, level, createdAt, content);
+        return Objects.hash(id, quizId, title, type, createdAt, content);
     }
 
     @Override
@@ -109,7 +98,6 @@ public class Quizquestion {
                 ", quizId=" + quizId +
                 ", title='" + title + '\'' +
                 ", type='" + type + '\'' +
-                ", level=" + level +
                 ", createdAt=" + createdAt +
                 ", content='" + content + '\'' +
                 '}';

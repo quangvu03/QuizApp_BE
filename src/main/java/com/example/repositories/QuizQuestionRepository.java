@@ -14,7 +14,7 @@ public interface QuizQuestionRepository extends CrudRepository<Quizquestion, Lon
     @Query(value = "SELECT COUNT(*) FROM quizquestion WHERE quizId = :quizId", nativeQuery = true)
     int countByQuizId(Long quizId);
 
-    @Query(value = "SELECT id, quizId, title, type, level, createdAt, content FROM quizquestion WHERE quizId = :quizId", nativeQuery = true)
+    @Query(value = "SELECT id, quizId, title, type, createdAt, content FROM quizquestion WHERE quizId = :quizId", nativeQuery = true)
     List<Quizquestion> findByQuizId(Long quizId);
 
 

@@ -3,25 +3,16 @@ package com.example.dtos;
 import io.micronaut.serde.annotation.Serdeable;
 import lombok.Data;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 @Serdeable
 
 @Data
 public class QuizanswerDTO {
-    private Long id;
     private Long quizId;
     private Long questionId;
-    private Byte correct;
+    private boolean correct;
     private String content;
-    private LocalDateTime createdAt;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Long getQuizId() {
         return quizId;
@@ -39,11 +30,11 @@ public class QuizanswerDTO {
         this.questionId = questionId;
     }
 
-    public Byte getCorrect() {
+    public boolean isCorrect() {
         return correct;
     }
 
-    public void setCorrect(Byte correct) {
+    public void setCorrect(boolean correct) {
         this.correct = correct;
     }
 
@@ -55,11 +46,4 @@ public class QuizanswerDTO {
         this.content = content;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
 }

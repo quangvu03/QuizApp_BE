@@ -78,7 +78,8 @@ public class QuizserviceImple implements QuizService {
     public detailQuiz getdetailQuiz(long idQuiz) {
         Quiz quiz = quizRepository.findById(idQuiz).orElse(null);
         long id = quiz.getId();
-        Account account = userRepository.findById(id).orElse(null);
+        Account account = userRepository.findById(quiz.getUserId()).orElse(null);
+        System.out.println("account: "+account);
         int numberquestion = quizQuestion.countByQuizId(id);
         long numberfavorite = favoriteRepositoty.countByQuizId(id);
         return new detailQuiz(id, quiz.getTitle(), quiz.getContent(), quiz.getCreatedAt(), quiz.getImage(), account.getUserName(), numberquestion, account.getAvatar(), numberfavorite);

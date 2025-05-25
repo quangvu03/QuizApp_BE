@@ -1,13 +1,12 @@
 package com.example.controller;
 
+import com.example.dtos.QuizquestionDTO;
 import com.example.dtos.reponseDTO.demoQuiz;
 import com.example.dtos.reponseDTO.examResponse;
 import com.example.repositories.QuizAnswerRepository;
 import com.example.service.QuizQuestionService;
 import io.micronaut.http.HttpResponse;
-import io.micronaut.http.annotation.Controller;
-import io.micronaut.http.annotation.Get;
-import io.micronaut.http.annotation.PathVariable;
+import io.micronaut.http.annotation.*;
 import jakarta.inject.Inject;
 
 import java.util.List;
@@ -19,13 +18,13 @@ public class QuestionController {
     @Inject
     QuizQuestionService quizQuestionService;
 
-    @Get("/getDeilQuiz/{id}")
+    @Get("/getDetailQuiz/{id}")
     public HttpResponse<?> getDetailsQuiz(@PathVariable("id") Long idquiz) {
         try {
             List<demoQuiz> detailQuizAnswerList = quizQuestionService.demoQuiz(idquiz);
 
             if (detailQuizAnswerList.isEmpty()) {
-                return HttpResponse.badRequest(
+                return HttpResponse.ok(
                         Map.of("result", "Không có câu hỏi nào")
                 );
             }
@@ -43,7 +42,6 @@ public class QuestionController {
         }
     }
 
-
     @Get("/getExam/{id}")
     public HttpResponse<?> getExam(@PathVariable("id") Long idquiz) {
         try {
@@ -60,5 +58,22 @@ public class QuestionController {
             );
         }
     }
+
+    @Post("/saveQuestion")
+    public HttpResponse<?> saveQuestion(@Body QuizquestionDTO quizquestionDTO) {
+        try {
+            Long result = quizQuestionService.saveQuestion(quizquestionDTO);
+            if (result > 0) {
+                return HttpResponse.ok(Map.of("idQuestion", result));
+            } else {
+                return HttpResponse.badRequest(Map.of("result", result));
+            }
+        } catch (Exception e) {
+            return HttpResponse.badRequest(Map.of("result", "Lỗi: " + e.getMessage()));
+        }
+
+    }
+
+
 }
 

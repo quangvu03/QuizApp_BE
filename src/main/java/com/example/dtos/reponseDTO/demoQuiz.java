@@ -12,7 +12,6 @@ public class demoQuiz {
     private Long id;
     private String title;
     private String type;
-    private int level;
     private Timestamp createdAt;
     private String content;
     private List<demoAnswer> answers;
@@ -39,14 +38,6 @@ public class demoQuiz {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
     }
 
     public Timestamp getCreatedAt() {

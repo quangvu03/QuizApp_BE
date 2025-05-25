@@ -11,7 +11,6 @@ public class examQuizDTO {
     private String title;
     private String type;
     private String content;
-    private int level;      // có thể null
     private List<demoAnswer> answers;
 
 
@@ -47,14 +46,6 @@ public class examQuizDTO {
         this.content = content;
     }
 
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
 
     public List<demoAnswer> getAnswers() {
         return answers;
@@ -71,7 +62,6 @@ public class examQuizDTO {
                 ", title='" + title + '\'' +
                 ", type='" + type + '\'' +
                 ", content='" + content + '\'' +
-                ", level=" + level +
                 ", answers=" + answers +
                 '}';
     }
