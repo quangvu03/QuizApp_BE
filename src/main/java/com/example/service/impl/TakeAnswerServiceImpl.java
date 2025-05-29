@@ -30,16 +30,18 @@ public class TakeAnswerServiceImpl implements TakeAnsweService {
             return takeAnswerRepository.saveAll(takeanswers);
 
         } catch (Exception e) {
-            e.printStackTrace();
+           throw new RuntimeException("Lỗi khi lưu đáp án: " + e.getMessage());
         }
-        return null;
     }
 
     @Override
     public List<Takeanswer> findAllByTakeid(long idTake) {
         try {
+            System.out.println(
+                    "Tìm kiếm tất cả đáp án cho Take ID: " + idTake
+            );
             List<Takeanswer> takeanswers = takeAnswerRepository.findAllByTakeId(idTake);
-            if (!takeanswers.isEmpty()) {
+            if (takeanswers.isEmpty()) {
                 throw new RuntimeException("Không tìm thấy takeAnswer");
             } else {
                 return takeanswers;

@@ -142,6 +142,31 @@ public class QuizserviceImple implements QuizService {
         return quizRepository.findByUserId(idUser);
     }
 
+    @Override
+    public List<getListQuizDTO> findQuizzesByUsername(String username) {
+        Optional<Account> userOptional = userRepository.findByUserName(username);
+        if (userOptional.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        Account user = userOptional.get();
+        List<Quiz> quizList = quizRepository.findByUserId(user.getId());
+        List<getListQuizDTO> resultList = new ArrayList<>();
+
+        for (Quiz quiz : quizList) {
+            int numberOfQuestions = quizQuestion.countByQuizId(quiz.getId());
+            getListQuizDTO dto = quizMapper.toGetListQuizDTO(quiz);
+            dto.setId(quiz.getId());
+            dto.setNumberquiz(numberOfQuestions);
+            dto.setUserName(user.getUserName());
+            dto.setTitle(quiz.getTitle());
+            dto.setImage(quiz.getImage());
+            dto.setImageUser(user.getAvatar());
+            resultList.add(dto);
+        }
+
+        return resultList;
+    }
+
 
 }
-

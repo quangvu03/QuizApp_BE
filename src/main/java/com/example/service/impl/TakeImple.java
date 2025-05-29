@@ -1,15 +1,17 @@
 package com.example.service.impl;
 
+import com.example.configurations.QuizMapper;
 import com.example.configurations.TakeMapper;
 import com.example.dtos.TakeDTO;
 import com.example.dtos.reponseDTO.ExamAnswerDTO;
 import com.example.dtos.reponseDTO.avgTake;
 import com.example.dtos.reponseDTO.detailsAnswer;
+import com.example.dtos.requestDTO.ResultExamRequest;
+import com.example.entities.Account;
+import com.example.entities.Quiz;
 import com.example.entities.Take;
 import com.example.helper.TotalTime;
-import com.example.repositories.QuizAnswerRepository;
-import com.example.repositories.TakeAnswerRepository;
-import com.example.repositories.TakeRepository;
+import com.example.repositories.*;
 import com.example.service.TakeService;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
@@ -24,15 +26,23 @@ public class TakeImple implements TakeService {
 
     @Inject
     TakeRepository takeRepository;
-
     @Inject
     TakeAnswerRepository takeAnswerRepository;
-
     @Inject
     TakeMapper takeMapper;
+    @Inject
+    QuizRepository quizRepository;
+    @Inject
+    UserRepository userRepository;
+    @Inject
+    QuizMapper quizMapper;
+
 
     @Inject
     QuizAnswerRepository quizAnswerRepository;
+
+    @Inject
+    private QuizQuestionRepository quizQuestionRepository;
 
     @Override
     public Take saveTake(TakeDTO takeDTO) {
@@ -105,6 +115,41 @@ public class TakeImple implements TakeService {
             return takeRepository.countTakesByQuizCreator(idUser);
         } catch (Exception e) {
             throw new RuntimeException("Lỗi: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<ResultExamRequest> getTakeByUserName(String username) {
+        try {
+            List<Take> takeList =  takeRepository.getTakeByUserName(username);
+            List<ResultExamRequest> listResult = new ArrayList<>();
+
+
+            for (Take take : takeList) {
+                Quiz quiz = quizRepository.findById(take.getQuizId())
+                        .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy quiz với ID: " + take.getQuizId()));
+                int numberOfQuestions = quizQuestionRepository.countByQuizId(quiz.getId());
+                Optional<Account> optionalAccount = userRepository.findById(quiz.getUserId());
+                Account account = optionalAccount.get();
+
+                ResultExamRequest dto = new ResultExamRequest();
+                dto.setTitle(quiz.getTitle());
+                dto.setNumberquiz(numberOfQuestions);
+                dto.setImage(quiz.getImage());
+                dto.setUserName(account.getUserName());
+                dto.setImageUser(account.getAvatar());
+                dto.setQuizId(quiz.getId());
+                dto.setCorrect(take.getScore());
+                dto.setFinishedAt(take.getFinishedAt());
+                dto.setTime(take.getTime());
+                dto.setCorrect(take.getCorrect());
+                dto.setTakeId(take.getId());
+
+                listResult.add(dto);
+            }
+            return listResult;
+        } catch (Exception e) {
+            throw new RuntimeException("Lỗi khi lấy danh sách bài làm của người dùng: " + e.getMessage(), e);
         }
     }
 

@@ -138,4 +138,16 @@ public class QuizController {
         }
     }
 
+    @Get("/findQuizzesByUsername")
+    public HttpResponse<?> findQuizzesByUsername(@QueryValue String username) {
+        try {
+            List<getListQuizDTO> quizList = quizService.findQuizzesByUsername(username);
+            return HttpResponse.ok(Map.of("result", quizList));
+        } catch (Exception e) {
+            return HttpResponse.badRequest(Map.of("result", "Lỗi: " + e.getMessage()));
+        }
+    }
+
+
+
 }

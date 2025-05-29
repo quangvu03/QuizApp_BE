@@ -23,5 +23,7 @@ public interface QuizService {
 
     List<Quiz> findByUserId(Long idUser);
 
+    List<getListQuizDTO> findQuizzesByUsername(String username);
+
 
 }

@@ -58,4 +58,13 @@ public class TakeController {
             return HttpResponse.badRequest(Map.of("result", "Lỗi: " + e.getMessage()));
         }
     }
+
+    @Get("/getTakeByUserName")
+    public HttpResponse<?> getTakeByUserName(@QueryValue("username") String username) {
+        try {
+            return HttpResponse.ok(Map.of("result", takeService.getTakeByUserName(username)));
+        } catch (Exception e) {
+            return HttpResponse.badRequest(Map.of("result", "Lỗi: " + e.getMessage()));
+        }
+    }
 }
