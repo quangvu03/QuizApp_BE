@@ -25,5 +25,6 @@ public interface QuizService {
 
     List<getListQuizDTO> findQuizzesByUsername(String username);
 
+    QuizDTO updateQuiz(QuizDTO quizDTO);
 
 }

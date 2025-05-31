@@ -148,6 +148,44 @@ public class QuizController {
         }
     }
 
+    @Put(value = "/updateQuiz", consumes = MediaType.MULTIPART_FORM_DATA)
+    @ExecuteOn(TaskExecutors.IO)
+    public HttpResponse<?> updateQuiz(
+            @Part("id") String id, // Chuyển sang String để chấp nhận chuỗi
+            @Part("title") String title,
+            @Part("content") String content,
+            @Part("image") String image,
+            @Nullable @Part("avatar") CompletedFileUpload file
+    ) {
+        try {
+            System.out.println("Received: id=" + id + ", title=" + title + ", content=" + content + ", file=" + (file != null ? file.getFilename() : "null"));
 
+            // Chuyển id thành Long
+            Long quizId;
+            try {
+                quizId = Long.parseLong(id);
+            } catch (NumberFormatException e) {
+                return HttpResponse.badRequest(Map.of("result", "ID không hợp lệ: " + id));
+            }
 
+            QuizDTO quizDTO = new QuizDTO();
+            quizDTO.setId(quizId);
+            quizDTO.setTitle(title);
+            quizDTO.setContent(content);
+
+            if (file != null && file.getFilename() != null) {
+                String nameImage = saveImageService.uploadImageQuiz(file);
+                quizDTO.setImage(nameImage);
+            }else{
+                quizDTO.setImage(image);
+            }
+
+            return HttpResponse.ok(Map.of("result", quizService.updateQuiz(quizDTO)));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return HttpResponse.badRequest(Map.of("result", "Lỗi: " + e.getMessage()));
+        }
+    }
 }
+
+

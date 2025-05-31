@@ -79,7 +79,7 @@ public class QuizserviceImple implements QuizService {
         Quiz quiz = quizRepository.findById(idQuiz).orElse(null);
         long id = quiz.getId();
         Account account = userRepository.findById(quiz.getUserId()).orElse(null);
-        System.out.println("account: "+account);
+//        System.out.println("account: "+account);
         int numberquestion = quizQuestion.countByQuizId(id);
         long numberfavorite = favoriteRepositoty.countByQuizId(id);
         return new detailQuiz(id, quiz.getTitle(), quiz.getContent(), quiz.getCreatedAt(), quiz.getImage(), account.getUserName(), numberquestion, account.getAvatar(), numberfavorite);
@@ -166,6 +166,43 @@ public class QuizserviceImple implements QuizService {
         }
 
         return resultList;
+    }
+
+    @Override
+    public QuizDTO updateQuiz(QuizDTO quizDTO) {
+
+        System.out.println("quizDTO: " + quizDTO);
+
+        if (quizDTO.getId() == null ) {
+            throw new IllegalArgumentException("ID quiz null");
+        }
+        if (quizDTO.getTitle() == null || quizDTO.getTitle().isEmpty()) {
+            throw new IllegalArgumentException("Tiêu đề rỗng");
+        }
+        if (quizDTO.getContent() == null || quizDTO.getContent().isEmpty()) {
+            throw new IllegalArgumentException("Thiếu mô tả");
+        }
+
+        int rowsUpdated = quizRepository.updateQuizById(
+                quizDTO.getId(),
+                quizDTO.getTitle(),
+                quizDTO.getContent(),
+                quizDTO.getImage()
+        );
+
+        if (rowsUpdated == 0) {
+            throw new RuntimeException("Không cập nhật được quiz với id = " + quizDTO.getId());
+        }
+
+        Quiz updatedQuiz = quizRepository.findById(quizDTO.getId())
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy quiz sau khi cập nhật"));
+        QuizDTO result = new QuizDTO();
+        result.setId(updatedQuiz.getId());
+        result.setTitle(updatedQuiz.getTitle());
+        result.setContent(updatedQuiz.getContent());
+        result.setImage(updatedQuiz.getImage());
+        System.out.println("updatedQuiz: " + result);
+        return result;
     }
 
 
