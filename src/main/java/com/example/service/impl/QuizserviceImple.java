@@ -18,6 +18,7 @@ import jakarta.inject.Singleton;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Singleton
@@ -170,9 +171,6 @@ public class QuizserviceImple implements QuizService {
 
     @Override
     public QuizDTO updateQuiz(QuizDTO quizDTO) {
-
-        System.out.println("quizDTO: " + quizDTO);
-
         if (quizDTO.getId() == null ) {
             throw new IllegalArgumentException("ID quiz null");
         }
@@ -204,6 +202,20 @@ public class QuizserviceImple implements QuizService {
         System.out.println("updatedQuiz: " + result);
         return result;
     }
+
+    @Override
+    public void deleteQuiz(Long idQuiz) {
+        if (idQuiz == null) {
+            throw new IllegalArgumentException("ID quiz không được null");
+        }
+
+        Quiz quiz = quizRepository.findById(idQuiz)
+                .orElseThrow(() -> new NoSuchElementException("Không tìm thấy quiz với id = " + idQuiz));
+
+        quizRepository.deleteById(idQuiz);
+    }
+
+
 
 
 }

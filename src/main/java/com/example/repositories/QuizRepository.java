@@ -24,5 +24,8 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
     int updateQuizById(Long id, String title, String content, String image);
     Optional<Quiz> findById(Long id);
 
+//    void deleteById(Long id);
+
+
 
 }

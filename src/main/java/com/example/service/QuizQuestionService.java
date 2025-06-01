@@ -14,4 +14,6 @@ public interface QuizQuestionService {
 
     Long saveQuestion(QuizquestionDTO quizquestionDTO);
 
+    boolean deleteQuestion(Long id);
+
 }

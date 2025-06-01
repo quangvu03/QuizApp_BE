@@ -111,7 +111,24 @@ public class QuizQuestionServiceImpl implements QuizQuestionService {
                 .orElseThrow(() -> new IllegalArgumentException("Lỗi: Quiz không tồn tại với ID: " + dto.getQuizId()));
     }
 
+    @Override
+    public boolean deleteQuestion(Long id) {
+        try {
+            if (id == null) {
+                throw new IllegalArgumentException("Lỗi: ID câu hỏi không được null.");
+            }
 
+            // Check if the question exists
+            if (!quizQuestionRepository.existsById(id)) {
+                return false;
+            }
 
+            // Delete the question
+            quizQuestionRepository.deleteById(id);
+            return true;
+        } catch (Exception e) {
+            throw new RuntimeException("Lỗi khi xóa câu hỏi: " + e.getMessage(), e);
+        }
+    }
 
 }

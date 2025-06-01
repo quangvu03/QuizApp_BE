@@ -27,4 +27,6 @@ public interface QuizService {
 
     QuizDTO updateQuiz(QuizDTO quizDTO);
 
+    void deleteQuiz(Long idQuiz);
+
 }

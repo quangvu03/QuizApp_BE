@@ -71,9 +71,20 @@ public class QuestionController {
         } catch (Exception e) {
             return HttpResponse.badRequest(Map.of("result", "Lỗi: " + e.getMessage()));
         }
-
     }
 
+    @Delete("/deleteQuestion/{id}")
+    public HttpResponse<?> deleteQuestion(@PathVariable("id") Long id) {
+        try {
+            boolean result = quizQuestionService.deleteQuestion(id);
+            if (result) {
+                return HttpResponse.ok(Map.of("result", "Câu hỏi đã được xóa thành công"));
+            } else {
+                return HttpResponse.notFound(Map.of("result", "Không tìm thấy câu hỏi với ID: " + id));
+            }
+        } catch (Exception e) {
+            return HttpResponse.badRequest(Map.of("result", "Lỗi: " + e.getMessage()));
+        }
+    }
 
 }
-

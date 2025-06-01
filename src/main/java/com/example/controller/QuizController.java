@@ -21,6 +21,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 @Controller("api/quiz")
 public class QuizController {
@@ -117,7 +118,6 @@ public class QuizController {
                 String nameImage = saveImageService.uploadImageQuiz(file);
                 quizDTO.setImage(nameImage);
             }
-            System.out.println("quizDTO: "+quizDTO);
             return HttpResponse.ok(Map.of("result", quizService.createQuiz(quizDTO)));
         } catch (Exception e) {
             return HttpResponse.badRequest(Map.of("result", "Lỗi: " + e.getMessage()));
@@ -186,6 +186,24 @@ public class QuizController {
             return HttpResponse.badRequest(Map.of("result", "Lỗi: " + e.getMessage()));
         }
     }
+
+    @Delete("/delete/{id}")
+    public HttpResponse<String> deleteQuiz(@PathVariable Long id) {
+        if (id == null) {
+            return HttpResponse.badRequest("ID không được để trống");
+        }
+        try {
+            quizService.deleteQuiz(id);
+            return HttpResponse.ok("Quiz đã được xóa thành công");
+        } catch (NoSuchElementException e) {
+            return HttpResponse.notFound("Không tìm thấy Quiz với ID: " + id);
+        } catch (Exception e) {
+            return HttpResponse.serverError("Lỗi khi xóa quiz: " + e.getMessage());
+        }
+    }
+
+
+
 }
 
 
