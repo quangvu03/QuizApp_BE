@@ -8,11 +8,20 @@ import java.time.LocalDateTime;
 
 @Data
 public class QuizquestionDTO {
+    private Long Id;
     private Long quizId;
+
     private String title;
     private String type;
     private String content;
 
+    public Long getId() {
+        return Id;
+    }
+
+    public void setId(Long id) {
+        Id = id;
+    }
 
     public Long getQuizId() {
         return quizId;

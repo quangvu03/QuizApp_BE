@@ -87,4 +87,19 @@ public class QuestionController {
         }
     }
 
+    @Put("/updateQuestion")
+    public HttpResponse<?> updateQuestion(@Body QuizquestionDTO quizquestionDTO) {
+        try {
+            boolean result = quizQuestionService.updateQuestion(quizquestionDTO);
+            if (result) {
+                return HttpResponse.ok(Map.of("result", "Câu hỏi đã được cập nhật thành công"));
+            } else {
+                return HttpResponse.badRequest(Map.of("result", "Không thể cập nhật câu hỏi"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return HttpResponse.badRequest(Map.of("result", "Lỗi: " + e.getMessage()));
+        }
+    }
+
 }

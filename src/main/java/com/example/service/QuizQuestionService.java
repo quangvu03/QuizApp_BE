@@ -16,4 +16,5 @@ public interface QuizQuestionService {
 
     boolean deleteQuestion(Long id);
 
+    boolean updateQuestion(QuizquestionDTO quizquestionDTO);
 }

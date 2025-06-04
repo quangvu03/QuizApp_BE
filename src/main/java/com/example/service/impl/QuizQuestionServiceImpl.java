@@ -117,18 +117,48 @@ public class QuizQuestionServiceImpl implements QuizQuestionService {
             if (id == null) {
                 throw new IllegalArgumentException("Lỗi: ID câu hỏi không được null.");
             }
-
-            // Check if the question exists
             if (!quizQuestionRepository.existsById(id)) {
                 return false;
             }
-
-            // Delete the question
             quizQuestionRepository.deleteById(id);
             return true;
         } catch (Exception e) {
             throw new RuntimeException("Lỗi khi xóa câu hỏi: " + e.getMessage(), e);
         }
+    }
+
+    @Override
+    public boolean updateQuestion(QuizquestionDTO dto) {
+        if (dto == null || dto.getQuizId() == null)
+            throw new IllegalArgumentException("DTO hoặc ID câu hỏi không được null.");
+
+        if (isBlank(dto.getTitle()))
+            throw new IllegalArgumentException("Tiêu đề câu hỏi không được null hoặc rỗng.");
+
+        if (isBlank(dto.getContent()))
+            throw new IllegalArgumentException("Nội dung câu hỏi không được null hoặc rỗng.");
+
+        if (isBlank(dto.getType()))
+            throw new IllegalArgumentException("Loại câu hỏi không được null hoặc rỗng.");
+
+        if (!quizQuestionRepository.existsById(dto.getId()))
+            throw new IllegalArgumentException("Câu hỏi không tồn tại với ID: " + dto.getQuizId());
+
+        try {
+            quizQuestionRepository.updateQuestionById(
+                    dto.getId(),
+                    dto.getTitle().trim(),
+                    dto.getContent().trim(),
+                    dto.getType().trim()
+            );
+            return true;
+        } catch (Exception e) {
+            throw new RuntimeException("Lỗi khi cập nhật câu hỏi: " + e.getMessage(), e);
+        }
+    }
+
+    private boolean isBlank(String str) {
+        return str == null || str.trim().isEmpty();
     }
 
 }

@@ -17,5 +17,7 @@ public interface QuizQuestionRepository extends CrudRepository<Quizquestion, Lon
     @Query(value = "SELECT id, quizId, title, type, createdAt, content FROM quizquestion WHERE quizId = :quizId", nativeQuery = true)
     List<Quizquestion> findByQuizId(Long quizId);
 
+    @Query(value = "UPDATE Quizquestion q SET q.title = :title, q.content = :content, q.type = :type WHERE q.id = :id", nativeQuery = true)
+    void updateQuestionById(Long id, String title, String content, String type);
 
 }
