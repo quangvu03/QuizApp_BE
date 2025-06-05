@@ -8,7 +8,7 @@ import java.util.Objects;
 
 @Serdeable
 @Entity
-@Table(name = "quiz", catalog = "")
+@Table(name = "quiz")
 public class Quiz {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
