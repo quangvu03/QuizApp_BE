@@ -4,16 +4,20 @@ import com.example.dtos.AccountDTO;
 import com.example.dtos.newpassWordDTO;
 import com.example.entities.Account;
 import com.example.service.AccountService;
+import com.example.service.VnExpressScraperService;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;
 import jakarta.inject.Inject;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller("api/account")
 public class UserController {
+    @Inject
+    VnExpressScraperService scraperService;
 
     @Inject
     AccountService accountService;
@@ -114,5 +118,21 @@ public class UserController {
                 return HttpResponse.serverError("Error: " + e.getMessage());
             }
         }
+    }
+
+    @Get(value = "/findAll", produces = MediaType.APPLICATION_JSON)
+    public HttpResponse<?> findAllUsers() {
+        try {
+            Iterable<AccountDTO> users = accountService.findAllUsers();
+            return HttpResponse.ok(Map.of("result", users));
+        } catch (Exception e) {
+            return HttpResponse.serverError("Error: " + e.getMessage());
+        }
+    }
+
+    @Get("/vnexpress")
+    public HttpResponse<List<Map<String, String>>> getVnExpressNews() {
+        List<Map<String, String>> news = scraperService.scrapeNews();
+        return HttpResponse.ok(news);
     }
 }

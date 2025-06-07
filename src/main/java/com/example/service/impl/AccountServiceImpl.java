@@ -11,6 +11,8 @@ import jakarta.inject.Singleton;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Singleton
 public class AccountServiceImpl implements AccountService {
@@ -26,6 +28,7 @@ public class AccountServiceImpl implements AccountService {
         try {
             Account user = userMapper.toEntity(userDTO);
             user.setStatus(false);
+            user.setRole("user");
             String rawPassword = userDTO.getPassword();
             if (user.getUserName() == null || user.getEmail() == null || user.getFullName() == null
                     || user.getPhone() == null) {
@@ -53,8 +56,8 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountDTO findbyUsername(String username) {
         return userRepository.findByUserName(username)
-                .map(userMapper::toDTO) // Nếu có kết quả, map sang DTO
-                .orElse(null); // Nếu không, trả về null
+                .map(userMapper::toDTO)
+                .orElse(null);
     }
 
     @Override
@@ -106,6 +109,12 @@ public class AccountServiceImpl implements AccountService {
             return null;
         }
     }
+
+    @Override
+    public Iterable<AccountDTO> findAllUsers() {
+        Iterable<Account> accounts = userRepository.findAll();
+        return StreamSupport.stream(accounts.spliterator(), false)
+                .map(userMapper::toDTO)
+                .collect(Collectors.toList());
+    }
 }
-
-

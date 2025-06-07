@@ -16,7 +16,6 @@ public class Account {
     @Column(name = "userName")
     private String userName;
 
-
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "password")
     private String password;
@@ -36,6 +35,16 @@ public class Account {
     @Column(name = "avatar")
     private String avatar;
 
+    @Column(name = "role")
+    private String role;
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public Long getId() {
         return id;
@@ -112,6 +121,7 @@ public class Account {
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", avatar='" + avatar + '\'' +
+                ", role='" + role + '\'' +
                 '}';
     }
 }

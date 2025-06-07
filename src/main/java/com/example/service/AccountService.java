@@ -12,4 +12,5 @@ public interface AccountService {
      String changPassword(String email, String changePassword);
      @Transactional
      Account updateAccount(Long id, AccountDTO accountDTO);
+     Iterable<AccountDTO> findAllUsers();
 }

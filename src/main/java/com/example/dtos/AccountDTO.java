@@ -17,7 +17,14 @@ public class AccountDTO {
     private String email;
     private String phone;
     private String avatar;
+    private String role;
 
+    public String getRole() {
+        return role;
+    }
+    public void setRole(String role) {
+        this.role = role;
+    }
     public Long getId() {
         return id;
     }
@@ -93,6 +100,7 @@ public class AccountDTO {
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", avatar='" + avatar + '\'' +
+                ", role='" + role + '\'' +
                 '}';
     }
 }

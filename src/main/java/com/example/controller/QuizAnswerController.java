@@ -50,12 +50,10 @@ public class QuizAnswerController {
                 return HttpResponse.badRequest("newAnswers không được null hoặc rỗng");
             }
 
-            // Convert sang QuizanswerDTO
             List<QuizanswerDTO> quizanswerDTOS = rawAnswers.stream()
                     .map(item -> objectMapper.convertValue(item, QuizanswerDTO.class))
                     .collect(Collectors.toList());
 
-            // Lấy danh sách oldAnswerIds
             @SuppressWarnings("unchecked")
             List<Number> rawIds = (List<Number>) requestBody.get("oldAnswerIds");
             if (rawIds == null || rawIds.isEmpty()) {
