@@ -32,22 +32,25 @@ public class VnExpressScraperService {
 
             // Lấy tất cả bài báo
             Elements articles = doc.select("article.item-news");
-            System.out.println("Found " + articles.size() + " articles");
+            // System.out.println("Found " + articles.size() + " articles");
 
             // Giới hạn 5 bài báo
             for (Element article : articles.subList(0, Math.min(articles.size(), 5))) {
                 Map<String, String> news = new HashMap<>();
 
-                // Lấy tiêu đề và link từ h2.title-news a
-                Element titleLinkElement = article.selectFirst("h2.title-news a");
-                String title = "Không có tiêu đề";
-                String link = "";
+                // Lấy tiêu đề từ thẻ có id="title_brandsafe_video"
+                Element titleElement = article.selectFirst("#title_brandsafe_video");
+                String title = titleElement != null ? titleElement.text().trim() : "Không có tiêu đề";
 
-                if (titleLinkElement != null) {
-                    title = titleLinkElement.text().trim();
-                    link = titleLinkElement.attr("href").trim();
-                } else {
-                    System.out.println("Không tìm thấy tiêu đề/link trong h2.title-news a");
+                // Lấy link từ thẻ a gần nhất hoặc trong cùng article
+                String link = "";
+                Element linkElement = titleElement != null ? titleElement.selectFirst("a") : null;
+                if (linkElement == null) {
+                    // Thử lấy từ div.thumb-art a hoặc p.description a
+                    linkElement = article.selectFirst("div.thumb-art a, p.description a");
+                }
+                if (linkElement != null) {
+                    link = linkElement.attr("href").trim();
                 }
 
                 // Đảm bảo link đầy đủ
@@ -56,11 +59,11 @@ public class VnExpressScraperService {
                         link = "https://vnexpress.net" + link;
                     }
                 } else {
-                    System.out.println("Không tìm thấy link cho bài báo: " + title);
+                    // System.out.println("Không tìm thấy link cho bài báo: " + title);
                 }
                 news.put("title", title);
                 news.put("url", link);
-                System.out.println("Title: " + title + ", Link: " + link);
+                // System.out.println("Title: " + title + ", Link: " + link);
 
                 // Lấy mô tả từ p.description
                 Element descriptionElement = article.selectFirst("p.description");
@@ -78,7 +81,7 @@ public class VnExpressScraperService {
             }
 
             if (newsItems.isEmpty()) {
-                System.out.println("Không tìm thấy bài báo nào");
+                // System.out.println("Không tìm thấy bài báo nào");
                 Map<String, String> error = new HashMap<>();
                 error.put("error", "Không tìm thấy bài báo");
                 newsItems.add(error);
@@ -87,7 +90,7 @@ public class VnExpressScraperService {
             Map<String, String> error = new HashMap<>();
             error.put("error", "Không thể tải tin tức: " + e.getMessage());
             newsItems.add(error);
-            System.err.println("Scrape error: " + e.getMessage());
+            // System.err.println("Scrape error: " + e.getMessage());
         }
         return newsItems;
     }

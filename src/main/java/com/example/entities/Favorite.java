@@ -1,7 +1,9 @@
 package com.example.entities;
 
+import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.*;
 
+@Serdeable
 @Entity
 @Table(name = "favorite")
 public class Favorite {

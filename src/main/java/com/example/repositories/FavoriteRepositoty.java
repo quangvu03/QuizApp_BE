@@ -6,6 +6,7 @@ import io.micronaut.data.annotation.Repository;
 import io.micronaut.data.repository.CrudRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface FavoriteRepositoty extends CrudRepository<Favorite, Long> {
@@ -14,4 +15,6 @@ public interface FavoriteRepositoty extends CrudRepository<Favorite, Long> {
     long countByQuizId(Long quizId);
 
     public List<Favorite> findByUserId(Long userId);
+
+    public Optional<Favorite> findByUserIdAndQuizId(Long userId, Long quizId);
 }
