@@ -62,15 +62,14 @@ public class QuizQuestionServiceImpl implements QuizQuestionService {
 
         for (Quizquestion quizquestion : quizquestions) {
             examQuizDTO examQuizDTO = new examQuizDTO();
-
             examQuizDTO.setId(quizquestion.getId());
             examQuizDTO.setTitle(quizquestion.getTitle());
             examQuizDTO.setType(quizquestion.getType());
             examQuizDTO.setContent(quizquestion.getContent());
+            examQuizDTO.setExplanation(quizquestion.getExplanation());
 
             List<demoAnswer> answers = quizAnswerRepository.findByQuizIdAndQuestionId(idQuiz, quizquestion.getId());
             examQuizDTO.setAnswers(answers);
-
             examQuizDTOs.add(examQuizDTO);
         }
 
@@ -81,6 +80,7 @@ public class QuizQuestionServiceImpl implements QuizQuestionService {
 
     @Override
     public Long saveQuestion(QuizquestionDTO dto) {
+        System.out.println("DTO: " + dto);
 
 
         if (dto == null) {
@@ -104,6 +104,13 @@ public class QuizQuestionServiceImpl implements QuizQuestionService {
                     qq.setType(dto.getType().trim());
                     qq.setCreatedAt(new Timestamp(System.currentTimeMillis()));
                     qq.setTitle(dto.getTitle() != null ? dto.getTitle().trim() : null);
+                    qq.setExplanation(dto.getExplanation().trim());
+
+                    if(dto.getExplanation()==null || dto.getExplanation().trim().isEmpty()) {
+                        qq.setExplanation(null); // Nếu giải thích rỗng, đặt là null
+                    } else {
+                        qq.setExplanation(dto.getExplanation().trim());
+                    }
 
                     Quizquestion saved = quizQuestionRepository.save(qq);
                     return saved.getId(); // Trả về ID của câu hỏi vừa lưu
@@ -149,7 +156,8 @@ public class QuizQuestionServiceImpl implements QuizQuestionService {
                     dto.getId(),
                     dto.getTitle().trim(),
                     dto.getContent().trim(),
-                    dto.getType().trim()
+                    dto.getType().trim(),
+                    dto.getExplanation()
             );
             return true;
         } catch (Exception e) {

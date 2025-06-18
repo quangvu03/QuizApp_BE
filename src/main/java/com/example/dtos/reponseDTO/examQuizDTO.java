@@ -11,6 +11,7 @@ public class examQuizDTO {
     private String title;
     private String type;
     private String content;
+    private String explanation; // có thể null
     private List<demoAnswer> answers;
 
 
@@ -46,6 +47,13 @@ public class examQuizDTO {
         this.content = content;
     }
 
+    public String getExplanation() {
+        return explanation;
+    }
+
+    public void setExplanation(String explanation) {
+        this.explanation = explanation;
+    }
 
     public List<demoAnswer> getAnswers() {
         return answers;

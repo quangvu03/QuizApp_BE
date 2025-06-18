@@ -7,8 +7,8 @@ import java.util.List;
 @Serdeable
 public class examResponse {
 
-        private int numberexamQuizDTO;
-        private List<examQuizDTO> examQuizDTO;
+    private int numberexamQuizDTO;
+    private List<examQuizDTO> examQuizDTO;
 
     public int getNumberexamQuizDTO() {
         return numberexamQuizDTO;

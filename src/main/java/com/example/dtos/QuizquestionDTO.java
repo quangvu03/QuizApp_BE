@@ -10,10 +10,10 @@ import java.time.LocalDateTime;
 public class QuizquestionDTO {
     private Long Id;
     private Long quizId;
-
     private String title;
     private String type;
     private String content;
+    private String explanation;
 
     public Long getId() {
         return Id;
@@ -47,12 +47,19 @@ public class QuizquestionDTO {
         this.type = type;
     }
 
-
     public String getContent() {
         return content;
     }
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getExplanation() {
+        return explanation;
+    }
+
+    public void setExplanation(String explanation) {
+        this.explanation = explanation;
     }
 }

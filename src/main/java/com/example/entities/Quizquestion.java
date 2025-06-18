@@ -30,6 +30,9 @@ public class Quizquestion {
     @Column(name = "content", nullable = true, length = -1)
     private String content;
 
+    @Column(name = "explanation", nullable = true, length = -1)
+    private String explanation;
+
     public long getId() {
         return id;
     }
@@ -78,28 +81,11 @@ public class Quizquestion {
         this.content = content;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Quizquestion that = (Quizquestion) o;
-        return id == that.id && Objects.equals(quizId, that.quizId) && Objects.equals(title, that.title) && Objects.equals(type, that.type) && Objects.equals(createdAt, that.createdAt) && Objects.equals(content, that.content);
+    public String getExplanation() {
+        return explanation;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, quizId, title, type, createdAt, content);
-    }
-
-    @Override
-    public String toString() {
-        return "Quizquestion{" +
-                "id=" + id +
-                ", quizId=" + quizId +
-                ", title='" + title + '\'' +
-                ", type='" + type + '\'' +
-                ", createdAt=" + createdAt +
-                ", content='" + content + '\'' +
-                '}';
+    public void setExplanation(String explanation) {
+        this.explanation = explanation;
     }
 }
