@@ -14,10 +14,12 @@ public interface QuizQuestionRepository extends CrudRepository<Quizquestion, Lon
     @Query(value = "SELECT COUNT(*) FROM quizquestion WHERE quizId = :quizId", nativeQuery = true)
     int countByQuizId(Long quizId);
 
-    @Query(value = "SELECT id, quizId, title, type, createdAt, content, explanation FROM quizquestion WHERE quizId = :quizId", nativeQuery = true)
+    @Query(value = "SELECT id, quizId, title, type, createdAt, content, explanation FROM quizquestion" +
+            " WHERE quizId = :quizId", nativeQuery = true)
     List<Quizquestion> findByQuizId(Long quizId);
 
-    @Query(value = "UPDATE quizquestion SET title = :title, content = :content, type = :type, explanation = :explanation WHERE id = :id", nativeQuery = true)
+    @Query(value = "UPDATE quizquestion SET title = :title, content = :content, type = :type," +
+            " explanation = :explanation WHERE id = :id", nativeQuery = true)
     void updateQuestionById(Long id, String title, String content, String type, String explanation);
 
 
