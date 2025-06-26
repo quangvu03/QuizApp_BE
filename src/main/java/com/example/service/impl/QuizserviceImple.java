@@ -6,11 +6,10 @@ import com.example.dtos.reponseDTO.detailQuiz;
 import com.example.dtos.reponseDTO.getListQuizDTO;
 import com.example.dtos.reponseDTO.getListUserQuizDTO;
 import com.example.entities.Account;
+import com.example.entities.Channel;
 import com.example.entities.Quiz;
-import com.example.repositories.FavoriteRepositoty;
-import com.example.repositories.QuizQuestionRepository;
-import com.example.repositories.QuizRepository;
-import com.example.repositories.UserRepository;
+import com.example.repositories.*;
+import com.example.service.ChannelService;
 import com.example.service.QuizService;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
@@ -40,6 +39,9 @@ public class QuizserviceImple implements QuizService {
     @Inject
     FavoriteRepositoty favoriteRepositoty;
 
+    @Inject
+    ChannelRepository channelRepository;
+
 
     @Override
     public List<getListQuizDTO> findAll() {
@@ -66,10 +68,14 @@ public class QuizserviceImple implements QuizService {
         List<Account> user = userRepository.findAll();
         List<getListUserQuizDTO> resultList = new ArrayList<>();
         for (Account account : user) {
+            List<Channel> channelList = channelRepository.findByUserId(account.getId());
+            Channel channel = channelList.get(0);
             getListUserQuizDTO dto = new getListUserQuizDTO();
             dto.setUsername(account.getUserName());
             dto.setNumberquiz(quizRepository.countByUserId(account.getId()));
             dto.setImage(account.getAvatar());
+            dto.setChannelName(channel.getNameChanel());
+            dto.setImagechanel(channel.getBackground());
             resultList.add(dto);
         }
         return resultList;
@@ -112,11 +118,18 @@ public class QuizserviceImple implements QuizService {
         List<Account> user = userRepository.findAccountsByUsernameContaining(username);
         List<getListUserQuizDTO> resultList = new ArrayList<>();
         for (Account account : user) {
-            getListUserQuizDTO dto = new getListUserQuizDTO();
-            dto.setUsername(account.getUserName());
-            dto.setNumberquiz(quizRepository.countByUserId(account.getId()));
-            dto.setImage(account.getAvatar());
-            resultList.add(dto);
+            List<Channel> channelList = channelRepository.findByUserId(account.getId());
+            Channel channel = channelList.get(0);
+            int numberQuiz = quizRepository.countByUserId(account.getId());
+            if (numberQuiz > 0) { // Only include if numberquiz is greater than 0
+                getListUserQuizDTO dto = new getListUserQuizDTO();
+                dto.setUsername(account.getUserName());
+                dto.setNumberquiz(numberQuiz);
+                dto.setImage(account.getAvatar());
+                dto.setChannelName(channel.getNameChanel());
+                dto.setImagechanel(channel.getBackground());
+                resultList.add(dto);
+            }
         }
         return resultList;
     }

@@ -2,14 +2,20 @@ package com.example.service.impl;
 
 import com.example.configurations.UserMapper;
 import com.example.dtos.AccountDTO;
+import com.example.dtos.ChannelDTO;
 import com.example.entities.Account;
+import com.example.entities.Channel;
+import com.example.repositories.ChannelRepository;
 import com.example.repositories.UserRepository;
 import com.example.service.AccountService;
+import com.example.service.ChannelService;
 import io.micronaut.transaction.annotation.Transactional;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -22,6 +28,12 @@ public class AccountServiceImpl implements AccountService {
 
     @Inject
     UserRepository userRepository;
+
+    @Inject
+    ChannelService channelService;
+
+    @Inject
+    ChannelRepository channelRepository;
 
     @Override
     public boolean create(AccountDTO userDTO) {
@@ -38,7 +50,16 @@ public class AccountServiceImpl implements AccountService {
                 throw new IllegalArgumentException("Password must not be null or empty");
             }
             userDTO.setPassword(BCrypt.hashpw(rawPassword, BCrypt.gensalt()));
-            userRepository.save(user);
+            Account userResponse= userRepository.save(user);
+
+            Channel channel = new Channel();
+            channel.setDescription("Xin chào ! Đây là kênh của " + user.getFullName());
+            channel.setCreatedAt(LocalDateTime.now());
+            channel.setUserId(userResponse.getId());
+            channel.setNameChanel(user.getFullName());
+            channel.setBackground("image1.png");
+            channelRepository.save(channel);
+
             return true;
         } catch (Exception e) {
             e.printStackTrace();

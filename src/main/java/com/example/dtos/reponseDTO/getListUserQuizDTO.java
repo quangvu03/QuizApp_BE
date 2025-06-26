@@ -9,7 +9,25 @@ public class getListUserQuizDTO {
     private String image;
     private String username;
     private int numberquiz;
+    private String channelName;
+    private String imagechanel;
 
+
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
+    }
+
+    public String getImagechanel() {
+        return imagechanel;
+    }
+
+    public void setImagechanel(String imagechanel) {
+        this.imagechanel = imagechanel;
+    }
 
     public String getImage() {
         return image;
@@ -30,7 +48,6 @@ public class getListUserQuizDTO {
     public int getNumberquiz() {
         return numberquiz;
     }
-
     public void setNumberquiz(int numberquiz) {
         this.numberquiz = numberquiz;
     }
